@@ -11,7 +11,7 @@ import {
 	Text,
 	Title,
 } from "@mantine/core"
-import { useCounter } from "@mantine/hooks"
+import { useCounter, useListState, useMounted } from "@mantine/hooks"
 import {
 	IconChevronDown,
 	IconChevronUp,
@@ -19,10 +19,21 @@ import {
 	IconShoppingCart,
 } from "@tabler/icons-react"
 import Link from "next/link"
+import { useEffect } from "react"
 
 const ProductDetails = () => {
+	const store: any = useStore()
 	const product = useStore((state: any) => state.singleProduct)
 	const [quantity, { increment, decrement }] = useCounter(0, { min: 0 })
+	const [cartList, cartListHandlers] = useListState<any>(store.cartList || [])
+	const mounted = useMounted()
+	// console.log("Cart List:", cartList)
+
+	useEffect(() => {
+		//set cart list from store
+		if (!mounted) return // Ensure the component is mounted before accessing store
+		cartListHandlers.setState(store.cartList)
+	}, [store.cartList, cartListHandlers, mounted])
 
 	return (
 		<Stack>
@@ -85,15 +96,36 @@ const ProductDetails = () => {
 							color="orange"
 							radius={0}
 							leftSection={<IconShoppingBag size={24} />}
+							disabled={quantity <= 0}
 						>
 							Buy Now
 						</Button>
 						<Button
-							component={Link}
-							href={`/products/${product?.id}/cart`}
 							color="red"
 							radius={0}
 							leftSection={<IconShoppingCart size={24} />}
+							disabled={quantity <= 0}
+							onClick={() => {
+								const targetIndex = cartList.findIndex(
+									(item) => item.id === product.id
+								)
+								if (targetIndex > -1) {
+									// If the product is already in the cart, update the quantity
+									cartListHandlers.setItem(targetIndex, {
+										...cartList[targetIndex],
+										quantity: cartList[targetIndex].quantity + quantity,
+									})
+								} else {
+									// If the product is not in the cart, add it with the current quantity
+									cartListHandlers.append({
+										...product,
+										quantity: quantity,
+									})
+								}
+								setTimeout(() => {
+									store.setCartList(cartList)
+								}, 100)
+							}}
 						>
 							ADD TO CART
 						</Button>

@@ -1,3 +1,4 @@
+import useStore from "@/store/store"
 import {
 	ActionIcon,
 	Affix,
@@ -20,6 +21,7 @@ import {
 import React from "react"
 
 const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
+	const store: any = useStore()
 	const { colorScheme, setColorScheme } = useMantineColorScheme()
 	const computedColorScheme = useComputedColorScheme("light", {
 		getInitialValueInEffect: true,
@@ -71,6 +73,16 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 								)}
 							</ActionIcon>
 						</Tooltip>
+						<ActionIcon
+							variant="subtle"
+							color="blue"
+							radius="sm"
+							onClick={() => {
+								store.clear()
+							}}
+						>
+							<IconShoppingBagHeart />
+						</ActionIcon>
 					</Group>
 				</Group>
 			</Paper>
