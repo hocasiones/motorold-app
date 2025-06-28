@@ -5,6 +5,7 @@ import React, { useEffect } from "react"
 import Header from "./Header"
 import { Footer } from "./Footer"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { Notifications } from "@mantine/notifications"
 
 // Create a client
 const queryClient = new QueryClient()
@@ -27,6 +28,7 @@ const Providers = ({
 
 	return (
 		<MantineProvider>
+			<Notifications position="top-center" limit={5} zIndex={2000} />
 			<QueryClientProvider client={queryClient}>
 				<Header ref={ref} />
 				<Box

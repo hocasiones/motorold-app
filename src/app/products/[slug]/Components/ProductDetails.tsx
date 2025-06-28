@@ -12,6 +12,7 @@ import {
 	Title,
 } from "@mantine/core"
 import { useCounter, useListState, useMounted } from "@mantine/hooks"
+import { notifications } from "@mantine/notifications"
 import {
 	IconChevronDown,
 	IconChevronUp,
@@ -124,6 +125,12 @@ const ProductDetails = () => {
 								}
 								setTimeout(() => {
 									store.setCartList(cartList)
+									notifications.show({
+										title: "Product Added to Cart",
+										message: `${product.product_name} has been added to your cart.`,
+										color: "green",
+										icon: <IconShoppingCart size={16} />,
+									})
 								}, 100)
 							}}
 						>

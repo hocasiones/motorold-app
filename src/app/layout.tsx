@@ -4,6 +4,8 @@ import type { Metadata } from "next"
 import "@mantine/core/styles.css"
 // ‼️ import carousel styles after core package styles
 import "@mantine/carousel/styles.css"
+// ‼️ import notifications styles after core package styles
+import "@mantine/notifications/styles.css"
 import "./globals.css"
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core"
 import Providers from "@/app/Components/Providers"
