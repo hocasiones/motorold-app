@@ -1,0 +1,50 @@
+{
+  "name": "motorold-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@directus/sdk": "^19.1.0",
+    "@mantine/carousel": "^8.1.1",
+    "@mantine/core": "^8.1.1",
+    "@mantine/dates": "^8.1.1",
+    "@mantine/dropzone": "^8.1.1",
+    "@mantine/form": "^8.1.1",
+    "@mantine/hooks": "^8.1.1",
+    "@mantine/modals": "^8.1.1",
+    "@mantine/notifications": "^8.1.1",
+    "@mantine/nprogress": "^8.1.1",
+    "@mantine/spotlight": "^8.1.1",
+    "@mantine/tiptap": "^8.1.1",
+    "@mantinex/mantine-logo": "^2.0.0",
+    "@tabler/icons-react": "^3.34.0",
+    "@tanstack/react-query": "^5.81.2",
+    "@tiptap/extension-link": "^2.22.3",
+    "@tiptap/pm": "^2.22.3",
+    "@tiptap/react": "^2.22.3",
+    "@tiptap/starter-kit": "^2.22.3",
+    "dayjs": "^1.11.13",
+    "embla-carousel": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
+    "html-react-parser": "^5.2.5",
+    "next": "15.3.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tanstack/eslint-plugin-query": "^5.81.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.4",
+    "typescript": "^5"
+  }
+}
