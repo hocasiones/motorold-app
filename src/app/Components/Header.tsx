@@ -6,8 +6,11 @@ import {
 	Paper,
 	Title,
 	Tooltip,
+	useComputedColorScheme,
+	useMantineColorScheme,
 } from "@mantine/core"
 import {
+	IconMoon,
 	IconSearch,
 	IconShoppingBagHeart,
 	IconShoppingCart,
@@ -17,6 +20,11 @@ import {
 import React from "react"
 
 const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
+	const { colorScheme, setColorScheme } = useMantineColorScheme()
+	const computedColorScheme = useComputedColorScheme("light", {
+		getInitialValueInEffect: true,
+	})
+
 	return (
 		<Affix position={{ top: 0, left: 0, right: 0 }} zIndex={1000}>
 			<Paper py={10} px={15} shadow="md" ref={ref}>
@@ -46,8 +54,21 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 							</ActionIcon>
 						</Tooltip>
 						<Tooltip label="Lighting" zIndex={1000}>
-							<ActionIcon variant="subtle" color="blue" radius="sm">
-								<IconSun />
+							<ActionIcon
+								variant="subtle"
+								color="blue"
+								radius="sm"
+								onClick={() =>
+									setColorScheme(
+										computedColorScheme === "light" ? "dark" : "light"
+									)
+								}
+							>
+								{colorScheme === "light" ? (
+									<IconSun size={20} />
+								) : (
+									<IconMoon size={20} stroke={1.5} />
+								)}
 							</ActionIcon>
 						</Tooltip>
 					</Group>

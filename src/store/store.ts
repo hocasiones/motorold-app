@@ -8,6 +8,8 @@ interface StoreType {
 	setUser: (user: object) => void
 	isRemembered: boolean
 	setIsRemembered: (isRemembered: boolean) => void
+	darkMode: boolean
+	setDarkMode: (darkMode: boolean) => void
 	fetchMaxCount: number
 	setFetchMaxCount: (fetchMaxCount: number) => void
 	cartList: object[]
@@ -33,6 +35,8 @@ const useStore = create(
 					setUser: (user) => set({ user }),
 					isRemembered: false,
 					setIsRemembered: (isRemembered) => set({ isRemembered }),
+					darkMode: false,
+					setDarkMode: (darkMode) => set({ darkMode }),
 					fetchMaxCount: 8,
 					setFetchMaxCount: (fetchMaxCount) => set({ fetchMaxCount }),
 					cartList: [],
