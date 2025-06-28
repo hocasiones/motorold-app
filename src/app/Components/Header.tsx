@@ -3,6 +3,7 @@ import {
 	ActionIcon,
 	Affix,
 	Group,
+	Indicator,
 	Input,
 	Paper,
 	Title,
@@ -41,9 +42,16 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 							readOnly
 						/>
 						<Tooltip label="Cart" zIndex={1000}>
-							<ActionIcon variant="subtle" color="blue" radius="sm">
-								<IconShoppingCart />
-							</ActionIcon>
+							<Indicator
+								label={store.cartList?.length ?? 0}
+								size={16}
+								color="red"
+								mb={-6}
+							>
+								<ActionIcon variant="subtle" color="blue" radius="sm">
+									<IconShoppingCart />
+								</ActionIcon>
+							</Indicator>
 						</Tooltip>
 						<Tooltip label="Compare" zIndex={1000}>
 							<ActionIcon variant="subtle" color="blue" radius="sm">
