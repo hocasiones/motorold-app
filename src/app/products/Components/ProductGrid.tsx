@@ -26,9 +26,9 @@ const ProductGrid = () => {
 	const router = useRouter()
 
 	return (
-		<SimpleGrid cols={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing="lg">
+		<SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="lg">
 			{products?.data?.map((product: ProductsType) => (
-				<Card key={product.id} withBorder shadow="sm" padding="lg">
+				<Card key={product.id} withBorder shadow="sm">
 					<Card.Section
 						style={(theme) => ({
 							backgroundColor: theme.colors.blue,
@@ -75,11 +75,16 @@ const ProductGrid = () => {
 									router.push(`/products/${product.id}`)
 								}}
 							>
-								VIEW
+								{product?.has_variations ? "VIEW VARIANTS" : "VIEW"}
 							</Button>
-							<Button color="red" leftSection={<IconShoppingCart size={20} />}>
-								ADD TO CART
-							</Button>
+							{!product?.has_variations && (
+								<Button
+									color="red"
+									leftSection={<IconShoppingCart size={20} />}
+								>
+									ADD TO CART
+								</Button>
+							)}
 						</Group>
 					</Stack>
 				</Card>

@@ -1,4 +1,5 @@
 import useStore from "@/store/store"
+import { ProductsType } from "@/Types/types"
 import {
 	ActionIcon,
 	Avatar,
@@ -124,7 +125,7 @@ const ProductDetails = () => {
 						onClick={() => {
 							if (!product?.has_variations) {
 								const targetIndex = store?.cartList?.findIndex(
-									(item: any) => item.id === product.id
+									(item: ProductsType) => item.id === product.id
 								)
 								if (targetIndex > -1) {
 									// If the product is already in the cart, update the quantity
@@ -144,7 +145,7 @@ const ProductDetails = () => {
 							} else {
 								// If the product has variations, add the selected variant to the cart
 								const targetIndex = store?.cartList?.findIndex(
-									(item: any) =>
+									(item: ProductsType) =>
 										item.id === product.id &&
 										item.selectedVariant?.id === selectedVariant?.id
 								)

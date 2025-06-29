@@ -7,6 +7,9 @@ export interface ProductsType {
 	featured_image: {
 		id: string
 	}
+	has_variations: boolean
+	quantity: number
+	selectedVariant?: any
 }
 
 export interface Schema {
