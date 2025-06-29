@@ -5,6 +5,11 @@ fragment ProductFragment on products {
 	featured_image {
 		id
 	}
+	images {
+		directus_files_id {
+			id
+		}
+	}
 	status
 	product_name
 	description

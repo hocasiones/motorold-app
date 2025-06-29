@@ -14,6 +14,8 @@ interface StoreType {
 	setFetchMaxCount: (fetchMaxCount: number) => void
 	cartList: object[]
 	setCartList: (cartList: object[]) => void
+	setCartListItem: (index: number, item: object) => void
+	setAppendCartList: (item: object) => void
 	compareList: object[]
 	setCompareList: (compareList: object[]) => void
 	wishList: object[]
@@ -27,7 +29,7 @@ export type { StoreType }
 const useStore = create(
 	devtools(
 		persist(
-			(set) =>
+			(set, get: any) =>
 				({
 					session: null,
 					setSession: (session) => set({ session }),
@@ -40,7 +42,17 @@ const useStore = create(
 					fetchMaxCount: 8,
 					setFetchMaxCount: (fetchMaxCount) => set({ fetchMaxCount }),
 					cartList: [],
-					setCartList: (cartList) => set({ cartList }),
+					setCartList: (items) => set({ items }),
+					setCartListItem: (index, item) => {
+						const cartList = get().cartList
+						cartList[index] = item
+						set({ cartList })
+					},
+					setAppendCartList: (item) => {
+						const cartList = get().cartList
+						cartList.push(item)
+						set({ cartList })
+					},
 					compareList: [],
 					setCompareList: (compareList) => set({ compareList }),
 					wishList: [],
@@ -56,7 +68,7 @@ const useStore = create(
 							cartList: [],
 							compareList: [],
 							wishList: [],
-							setSingleProduct: null,
+							singleProduct: null,
 						}),
 				} as StoreType),
 			{

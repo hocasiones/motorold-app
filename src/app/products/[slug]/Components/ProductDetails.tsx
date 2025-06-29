@@ -1,6 +1,7 @@
 import useStore from "@/store/store"
 import {
 	ActionIcon,
+	Avatar,
 	Badge,
 	Button,
 	Group,
@@ -11,30 +12,21 @@ import {
 	Text,
 	Title,
 } from "@mantine/core"
-import { useCounter, useListState, useMounted } from "@mantine/hooks"
+import { useCounter } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
 import {
 	IconChevronDown,
 	IconChevronUp,
-	IconShoppingBag,
 	IconShoppingCart,
 } from "@tabler/icons-react"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useState } from "react"
 
 const ProductDetails = () => {
 	const store: any = useStore()
 	const product = useStore((state: any) => state.singleProduct)
 	const [quantity, { increment, decrement }] = useCounter(0, { min: 0 })
-	const [cartList, cartListHandlers] = useListState<any>(store.cartList || [])
-	const mounted = useMounted()
-	// console.log("Cart List:", cartList)
-
-	useEffect(() => {
-		//set cart list from store
-		if (!mounted) return // Ensure the component is mounted before accessing store
-		cartListHandlers.setState(store.cartList)
-	}, [store.cartList, cartListHandlers, mounted])
+	const [selectedVariant, setSelectedVariant] = useState<any>({})
 
 	return (
 		<Stack>
@@ -66,6 +58,36 @@ const ProductDetails = () => {
 			</Text>
 			<Paper shadow="xs" p="md" radius={5}>
 				<Stack>
+					{selectedVariant?.variation_name && (
+						<Text fz="md">
+							Variant: <strong>{selectedVariant?.variation_name}</strong>
+						</Text>
+					)}
+					{product?.has_variations && (
+						<Group wrap="wrap" gap={10}>
+							{product?.variations?.map((variant: any) => (
+								<ActionIcon
+									key={variant?.product_variations_id?.id}
+									size={50}
+									color={
+										selectedVariant?.id === variant?.product_variations_id?.id
+											? "red"
+											: "transparent"
+									}
+									variant="filled"
+									onClick={() => {
+										setSelectedVariant(variant?.product_variations_id)
+									}}
+								>
+									<Avatar
+										src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${variant?.product_variations_id?.image?.id}`}
+										radius="sm"
+										size={47}
+									/>
+								</ActionIcon>
+							))}
+						</Group>
+					)}
 					<ActionIcon.Group>
 						<ActionIcon
 							variant="default"
@@ -92,51 +114,65 @@ const ProductDetails = () => {
 							<IconChevronUp color="var(--mantine-color-teal-text)" />
 						</ActionIcon>
 					</ActionIcon.Group>
-					<Group grow>
-						<Button
-							color="orange"
-							radius={0}
-							leftSection={<IconShoppingBag size={24} />}
-							disabled={quantity <= 0}
-						>
-							Buy Now
-						</Button>
-						<Button
-							color="red"
-							radius={0}
-							leftSection={<IconShoppingCart size={24} />}
-							disabled={quantity <= 0}
-							onClick={() => {
-								const targetIndex = cartList.findIndex(
-									(item) => item.id === product.id
+					<Button
+						color="red"
+						radius={0}
+						leftSection={<IconShoppingCart size={24} />}
+						disabled={
+							quantity <= 0 || (!product?.has_variations && !selectedVariant)
+						}
+						onClick={() => {
+							if (!product?.has_variations) {
+								const targetIndex = store?.cartList?.findIndex(
+									(item: any) => item.id === product.id
 								)
 								if (targetIndex > -1) {
 									// If the product is already in the cart, update the quantity
-									cartListHandlers.setItem(targetIndex, {
-										...cartList[targetIndex],
-										quantity: cartList[targetIndex].quantity + quantity,
+									store?.setCartListItem(targetIndex, {
+										...store?.cartList[targetIndex],
+										quantity: store?.cartList[targetIndex].quantity + quantity,
+										selectedVariant: selectedVariant,
 									})
 								} else {
 									// If the product is not in the cart, add it with the current quantity
-									cartListHandlers.append({
+									store?.setAppendCartList({
 										...product,
+										quantity: quantity,
+										selectedVariant: selectedVariant,
+									})
+								}
+							} else {
+								// If the product has variations, add the selected variant to the cart
+								const targetIndex = store?.cartList?.findIndex(
+									(item: any) =>
+										item.id === product.id &&
+										item.selectedVariant?.id === selectedVariant?.id
+								)
+								if (targetIndex > -1) {
+									// If the variant is already in the cart, update the quantity
+									store?.setCartListItem(targetIndex, {
+										...store?.cartList[targetIndex],
+										quantity: store?.cartList[targetIndex].quantity + quantity,
+									})
+								} else {
+									// If the variant is not in the cart, add it with the current quantity
+									store?.setAppendCartList({
+										...product,
+										selectedVariant: selectedVariant,
 										quantity: quantity,
 									})
 								}
-								setTimeout(() => {
-									store.setCartList(cartList)
-									notifications.show({
-										title: "Product Added to Cart",
-										message: `${product.product_name} has been added to your cart.`,
-										color: "green",
-										icon: <IconShoppingCart size={16} />,
-									})
-								}, 100)
-							}}
-						>
-							ADD TO CART
-						</Button>
-					</Group>
+							}
+							notifications.show({
+								title: "Product Added to Cart",
+								message: `${product.product_name} has been added to your cart.`,
+								color: "green",
+								icon: <IconShoppingCart size={16} />,
+							})
+						}}
+					>
+						ADD TO CART
+					</Button>
 				</Stack>
 			</Paper>
 		</Stack>

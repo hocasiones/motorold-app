@@ -17,29 +17,32 @@ import {
 	Title,
 } from "@mantine/core"
 import { IconEye, IconShoppingCart } from "@tabler/icons-react"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useContext } from "react"
 
 const ProductGrid = () => {
 	const store: any = useStore()
 	const { products } = useContext(HomeContext)
+	const router = useRouter()
 
 	return (
-		<SimpleGrid cols={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing="xl">
+		<SimpleGrid cols={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing="lg">
 			{products?.data?.map((product: ProductsType) => (
 				<Card key={product.id} withBorder shadow="sm" padding="lg">
 					<Card.Section
-						component={Link}
-						href={`/products/${product.id}`}
 						style={(theme) => ({
 							backgroundColor: theme.colors.blue,
+							cursor: "pointer",
 						})}
 					>
 						<Image
 							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=600&height=600&fit=cover`}
 							h={`100%`}
 							alt={product.product_name}
-							onClick={() => store.setSingleProduct(product)}
+							onClick={() => {
+								store?.setSingleProduct(product)
+								router.push(`/products/${product.id}`)
+							}}
 						/>
 					</Card.Section>
 					<Stack gap={5} mt="lg" justify="space-between" h={`100%`}>
@@ -67,9 +70,10 @@ const ProductGrid = () => {
 							<Button
 								color="blue"
 								leftSection={<IconEye size={22} />}
-								component={Link}
-								href={`/products/${product.id}`}
-								onClick={() => store.setSingleProduct(product)}
+								onClick={() => {
+									store?.setSingleProduct(product)
+									router.push(`/products/${product.id}`)
+								}}
 							>
 								VIEW
 							</Button>
