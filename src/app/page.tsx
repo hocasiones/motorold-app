@@ -9,7 +9,7 @@ import { Paper, SimpleGrid, Skeleton, Space, Stack, Text } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 
-export default function Home() {
+export default function Page() {
 	const store: any = useStore()
 
 	const products = useQuery({

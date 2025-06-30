@@ -1,6 +1,7 @@
 import { createContext } from "react"
 
+const SiteContext = createContext({} as any)
 const HomeContext = createContext({} as any)
 const ProductContext = createContext({} as any)
 
-export { HomeContext, ProductContext }
+export { SiteContext, HomeContext, ProductContext }

@@ -1,5 +1,6 @@
 import { Anchor, Box, Container, Group } from "@mantine/core"
 import { MantineLogo } from "@mantinex/mantine-logo"
+import CartDrawer from "./CartDrawer"
 
 const links = [
 	{ link: "#", label: "Contact" },
@@ -29,6 +30,7 @@ export function Footer() {
 					<Group>{items}</Group>
 				</Group>
 			</Container>
+			<CartDrawer />
 		</Box>
 	)
 }

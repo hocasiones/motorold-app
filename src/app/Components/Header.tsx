@@ -1,3 +1,4 @@
+import { SiteContext } from "@/Context/context"
 import useStore from "@/store/store"
 import {
 	ActionIcon,
@@ -19,7 +20,7 @@ import {
 	IconSun,
 	IconVs,
 } from "@tabler/icons-react"
-import React from "react"
+import React, { useContext } from "react"
 
 const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 	const store: any = useStore()
@@ -27,6 +28,7 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 	const computedColorScheme = useComputedColorScheme("light", {
 		getInitialValueInEffect: true,
 	})
+	const { openCartDrawer } = useContext(SiteContext).cartDrawer
 
 	return (
 		<Affix position={{ top: 0, left: 0, right: 0 }} zIndex={1000}>
@@ -48,7 +50,12 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 								color="red"
 								mb={-6}
 							>
-								<ActionIcon variant="subtle" color="blue" radius="sm">
+								<ActionIcon
+									variant="subtle"
+									color="blue"
+									radius="sm"
+									onClick={openCartDrawer}
+								>
 									<IconShoppingCart />
 								</ActionIcon>
 							</Indicator>
