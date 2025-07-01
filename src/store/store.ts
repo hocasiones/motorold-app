@@ -57,7 +57,6 @@ const useStore = create(
 					},
 					getCartListTotal: () => {
 						return get().cartList.reduce((acc: number, curr: any) => {
-							console.log(acc, curr)
 							if (!curr?.has_variations) {
 								return acc + curr?.prices?.store_price * curr?.quantity
 							}

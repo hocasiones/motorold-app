@@ -13,12 +13,14 @@ import {
 	Text,
 } from "@mantine/core"
 import { IconChevronDown, IconChevronUp, IconTrash } from "@tabler/icons-react"
+import { useRouter } from "next/navigation"
 import { memo, useContext } from "react"
 
 const CartDrawer = () => {
 	const { cartDrawerOpened, closeCartDrawer } =
 		useContext(SiteContext).cartDrawer
 	const store: any = useStore()
+	const router = useRouter()
 
 	return (
 		<Drawer
@@ -154,7 +156,14 @@ const CartDrawer = () => {
 						</Text>
 					</Text>
 				</Group>
-				<Button radius={0} fullWidth>
+				<Button
+					radius={0}
+					fullWidth
+					onClick={() => {
+						closeCartDrawer()
+						router.push("/checkout")
+					}}
+				>
 					PROCEED TO CHECKOUT
 				</Button>
 			</Stack>
