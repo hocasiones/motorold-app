@@ -1,10 +1,11 @@
 "use client"
 
 import { CheckoutContext } from "@/Context/context"
-import PaymentOptions from "./Components/PaymentOptions"
-import { useMemo, useState } from "react"
 import { Stepper } from "@mantine/core"
+import { useMemo, useState } from "react"
+import PaymentOptions from "./Components/PaymentOptions"
 import ShippingOptions from "./Components/ShippingOptions"
+import CustomerDetails from "./Components/CustomerDetails"
 
 const Page = () => {
 	const [step, setStep] = useState(0)
@@ -33,14 +34,14 @@ const Page = () => {
 				color="green"
 				styles={{ separator: { borderTop: "1px solid #CCC" } }}
 			>
-				<Stepper.Step label="Shipping" description="Choose Shipping method">
+				<Stepper.Step label="Customer Info" description="Enter your details">
+					<CustomerDetails />
+				</Stepper.Step>
+				<Stepper.Step label="Shipping" description="Choose shipping method">
 					<ShippingOptions />
 				</Stepper.Step>
 				<Stepper.Step label="Payment" description="Choose payment method">
 					<PaymentOptions />
-				</Stepper.Step>
-				<Stepper.Step label="Customer Info" description="Enter your details">
-					Step 3 content: Get full access
 				</Stepper.Step>
 				<Stepper.Completed>
 					Completed, click back button to get to previous step

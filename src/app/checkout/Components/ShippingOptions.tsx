@@ -1,16 +1,22 @@
 import { Button, Center, Paper, SimpleGrid, Stack } from "@mantine/core"
-import React from "react"
 
 const ShippingOptions = () => {
 	return (
 		<Center>
-			<Paper shadow="md" p="lg" w={600} radius={10}>
+			<Stack>
 				<SimpleGrid cols={2} spacing="lg">
-					<Button size="xl" color="orange" h={150} radius="lg" variant="filled">
+					<Button
+						size="xl"
+						color="orange"
+						h={150}
+						radius="lg"
+						variant="outline"
+					>
 						LALAMOVE
 					</Button>
 				</SimpleGrid>
-			</Paper>
+				<Paper shadow="md" p="lg" w={800} radius={10}></Paper>
+			</Stack>
 		</Center>
 	)
 }

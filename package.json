@@ -28,6 +28,7 @@
     "@tiptap/pm": "^2.22.3",
     "@tiptap/react": "^2.22.3",
     "@tiptap/starter-kit": "^2.22.3",
+    "@vis.gl/react-google-maps": "^1.5.3",
     "dayjs": "^1.11.13",
     "embla-carousel": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
