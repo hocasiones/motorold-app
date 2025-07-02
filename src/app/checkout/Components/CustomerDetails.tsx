@@ -12,7 +12,7 @@ import OrderSummary from "./OrderSummary"
 
 const CustomerDetails = () => {
 	return (
-		<Grid gutter="lg">
+		<Grid gutter="lg" mt={20}>
 			<Grid.Col span={8}>
 				<Paper shadow="md" p="lg" radius={5}>
 					<Stack>
@@ -37,9 +37,9 @@ const CustomerDetails = () => {
 							size="md"
 							leftSection={<IconMail />}
 						/>
-						<Divider label="Address / Current Location" labelPosition="left" />
 						<TextInput
-							placeholder="Search Location"
+							label="Address"
+							placeholder="Search"
 							size="md"
 							leftSection={<IconSearch />}
 						/>

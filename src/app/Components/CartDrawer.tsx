@@ -40,7 +40,7 @@ const CartDrawer = () => {
 						>
 							<Group wrap="nowrap" align="start">
 								<Image
-									src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${item?.featured_image?.id}`}
+									src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${item?.featured_image?.id}&width=200&height=200&fit=cover`}
 									alt={item?.product_name}
 									h={100}
 									w={100}
@@ -129,7 +129,7 @@ const CartDrawer = () => {
 				bg="white"
 				mt={20}
 				py={10}
-				gap={5}
+				gap={10}
 				style={{
 					position: "sticky",
 					bottom: 0,
@@ -139,17 +139,17 @@ const CartDrawer = () => {
 				}}
 			>
 				<Group justify="space-between" align="center">
-					<Text size="lg">
+					<Text size="md">
 						Order Items:{" "}
 						<Text fw={700} span>
 							{store?.cartList?.length ?? 0}
 						</Text>
 					</Text>
-					<Text size="xl">
-						Total:{" "}
+					<Text size="lg">
+						Sub Total:{" "}
 						<Text c="red" fw={700} span>
 							<NumberFormatter
-								value={store?.getCartListTotal()}
+								value={store?.getCartListSubTotal()}
 								prefix="₱"
 								thousandSeparator
 							/>
@@ -157,6 +157,7 @@ const CartDrawer = () => {
 					</Text>
 				</Group>
 				<Button
+					size="md"
 					radius={0}
 					fullWidth
 					onClick={() => {

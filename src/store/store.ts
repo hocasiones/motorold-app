@@ -16,7 +16,7 @@ interface StoreType {
 	setCartList: (cartList: object[]) => void
 	setCartListItem: (index: number, item: object) => void
 	setAppendCartList: (item: object) => void
-	getCartListTotal: () => number
+	getCartListSubTotal: () => number
 	removeCartListItem: (index: number) => void
 	compareList: object[]
 	setCompareList: (compareList: object[]) => void
@@ -55,7 +55,7 @@ const useStore = create(
 						cartList.push(item)
 						set({ cartList })
 					},
-					getCartListTotal: () => {
+					getCartListSubTotal: () => {
 						return get().cartList.reduce((acc: number, curr: any) => {
 							if (!curr?.has_variations) {
 								return acc + curr?.prices?.store_price * curr?.quantity
