@@ -1,55 +1,78 @@
 import {
+	Button,
 	Divider,
-	Grid,
 	Group,
 	Paper,
+	Space,
 	Stack,
 	Text,
 	TextInput,
 } from "@mantine/core"
 import { IconDeviceMobile, IconMail, IconSearch } from "@tabler/icons-react"
-import OrderSummary from "./OrderSummary"
+import CheckoutWrapper from "./CheckoutWrapper"
+import { CheckoutContext } from "@/Context/context"
+import { useContext } from "react"
 
 const CustomerDetails = () => {
+	const { nextStep, form } = useContext(CheckoutContext)
+
 	return (
-		<Grid gutter="lg" mt={20}>
-			<Grid.Col span={8}>
-				<Paper shadow="md" p="lg" radius={5}>
-					<Stack>
-						<Text fz={20} fw={700}>
-							Customer Details
-						</Text>
-						<Divider />
-						<Group grow>
-							<TextInput label="First Name" size="md" required />
-							<TextInput label="Last Name" size="md" required />
-						</Group>
+		<CheckoutWrapper>
+			<Paper shadow="md" p="lg" radius={5}>
+				<Stack>
+					<Text fz={20} fw={700}>
+						Customer Details
+					</Text>
+					<Divider />
+					<Group grow>
 						<TextInput
-							label="Mobile Number"
-							placeholder="eg. 09461234567"
+							label="First Name"
 							size="md"
 							required
-							leftSection={<IconDeviceMobile />}
+							{...form.getInputProps("firstName")}
 						/>
 						<TextInput
-							label="Email"
-							placeholder="example@gmail.com"
+							label="Last Name"
 							size="md"
-							leftSection={<IconMail />}
+							required
+							{...form.getInputProps("lastName")}
 						/>
-						<TextInput
-							label="Address"
-							placeholder="Search"
-							size="md"
-							leftSection={<IconSearch />}
-						/>
-					</Stack>
-				</Paper>
-			</Grid.Col>
-			<Grid.Col span={4}>
-				<OrderSummary />
-			</Grid.Col>
-		</Grid>
+					</Group>
+					<TextInput
+						label="Mobile Number"
+						placeholder="eg. 09461234567"
+						size="md"
+						required
+						leftSection={<IconDeviceMobile />}
+						{...form.getInputProps("mobileNumber")}
+					/>
+					<TextInput
+						label="Email"
+						placeholder="example@gmail.com"
+						size="md"
+						leftSection={<IconMail />}
+						{...form.getInputProps("email")}
+					/>
+				</Stack>
+			</Paper>
+			<Group justify="space-between" mt={20}>
+				{/* <Button>PREV</Button> */}
+				<Space />
+				<Button
+					disabled={
+						!form.isDirty() ||
+						Object.keys(form.errors).length > 0 ||
+						form.getValues().firstName.length === 0 ||
+						form.getValues().lastName.length === 0 ||
+						form.getValues().mobileNumber.length === 0 ||
+						form.getValues().email.length === 0
+					}
+					onClick={nextStep}
+				>
+					NEXT
+				</Button>
+			</Group>
+		</CheckoutWrapper>
 	)
 }
 
