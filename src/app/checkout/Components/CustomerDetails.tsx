@@ -1,3 +1,4 @@
+import { CheckoutContext } from "@/Context/context"
 import {
 	Button,
 	Divider,
@@ -8,10 +9,9 @@ import {
 	Text,
 	TextInput,
 } from "@mantine/core"
-import { IconDeviceMobile, IconMail, IconSearch } from "@tabler/icons-react"
-import CheckoutWrapper from "./CheckoutWrapper"
-import { CheckoutContext } from "@/Context/context"
+import { IconDeviceMobile, IconMail } from "@tabler/icons-react"
 import { useContext } from "react"
+import CheckoutWrapper from "./CheckoutWrapper"
 
 const CustomerDetails = () => {
 	const { nextStep, form } = useContext(CheckoutContext)
@@ -43,20 +43,19 @@ const CustomerDetails = () => {
 						placeholder="eg. 09461234567"
 						size="md"
 						required
-						leftSection={<IconDeviceMobile />}
+						leftSection={<IconDeviceMobile size={16} />}
 						{...form.getInputProps("mobileNumber")}
 					/>
 					<TextInput
 						label="Email"
 						placeholder="example@gmail.com"
 						size="md"
-						leftSection={<IconMail />}
+						leftSection={<IconMail size={16} />}
 						{...form.getInputProps("email")}
 					/>
 				</Stack>
 			</Paper>
 			<Group justify="space-between" mt={20}>
-				{/* <Button>PREV</Button> */}
 				<Space />
 				<Button
 					disabled={

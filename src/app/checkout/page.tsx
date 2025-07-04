@@ -39,6 +39,8 @@ const Page = () => {
 		validateInputOnChange: true,
 	})
 
+	const [selectedShipping, setSelectedShipping] = useState({ lalamove: false })
+
 	const ctx = useMemo(() => {
 		return {
 			step,
@@ -46,8 +48,10 @@ const Page = () => {
 			nextStep,
 			prevStep,
 			form,
+			selectedShipping,
+			setSelectedShipping,
 		}
-	}, [step, setStep, form])
+	}, [step, setStep, form, selectedShipping, setSelectedShipping])
 
 	return (
 		<CheckoutContext.Provider value={ctx}>
@@ -62,10 +66,10 @@ const Page = () => {
 					styles={{ separator: { borderTop: "1px solid #CCC" } }}
 				>
 					<Stepper.Step label="Customer Info" description="Enter your details">
-						<CustomerDetails />
+						<ShippingOptions />
 					</Stepper.Step>
 					<Stepper.Step label="Shipping" description="Choose shipping method">
-						<ShippingOptions />
+						<CustomerDetails />
 					</Stepper.Step>
 					<Stepper.Step label="Payment" description="Choose payment method">
 						<PaymentOptions />
