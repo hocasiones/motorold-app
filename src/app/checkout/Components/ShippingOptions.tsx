@@ -2,11 +2,14 @@ import { CheckoutContext } from "@/Context/context"
 import { Button, Divider, Group, SimpleGrid, Stack, Text } from "@mantine/core"
 import { useContext } from "react"
 import CheckoutWrapper from "./CheckoutWrapper"
-import Lalamove from "./lalamove/Lalamove"
+import Lalamove from "./Lalamove"
 
 const ShippingOptions = () => {
-	const { prevStep, nextStep, selectedShipping, setSelectedShipping } =
-		useContext(CheckoutContext)
+	const {
+		steps: { prevStep, nextStep },
+		selectedShipping,
+		setSelectedShipping,
+	} = useContext(CheckoutContext)
 	console.log(selectedShipping)
 	return (
 		<CheckoutWrapper>

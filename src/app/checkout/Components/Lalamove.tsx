@@ -7,8 +7,8 @@ import {
 } from "@vis.gl/react-google-maps"
 import { useState } from "react"
 
-import LMapControl from "./LMapControl"
-import LMapResult from "./LMapResult"
+import MapControl from "./map/MapControl"
+import MapResult from "./map/MapResult"
 
 const API_KEY: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string
 
@@ -39,11 +39,11 @@ const Lalamove = () => {
 							setHasClicked(true)
 						}}
 					>
-						<LMapControl
+						<MapControl
 							controlPosition={ControlPosition.TOP_LEFT}
 							onPlaceSelect={setSelectedPlace}
 						/>
-						<LMapResult place={selectedPlace} />
+						<MapResult place={selectedPlace} />
 						{hasClicked && (
 							<AdvancedMarker position={{ lat: lat, lng: long }} />
 						)}

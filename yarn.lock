@@ -2937,6 +2937,11 @@ react-dropzone@14.3.8:
     file-selector "^2.1.0"
     prop-types "^15.8.1"
 
+react-geolocated@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-geolocated/-/react-geolocated-4.3.0.tgz#94565732e029624ea4c089660a24c544e256a68a"
+  integrity sha512-jj3x45VACcHHvSNWqWHf0f60V12pQDPIH6HuFyJi+BmndQ/dlE+vR0R2Eis+BYnwZPTlaEQ/ANmJjuUPH3Lxsg==
+
 react-is@^16.13.1, react-is@^16.3.2:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"

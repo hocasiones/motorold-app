@@ -2,13 +2,14 @@
 
 import { CheckoutContext } from "@/Context/context"
 import { Stepper } from "@mantine/core"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import PaymentOptions from "./Components/PaymentOptions"
 import ShippingOptions from "./Components/ShippingOptions"
 import CustomerDetails from "./Components/CustomerDetails"
 import { useForm } from "@mantine/form"
 import z from "zod"
 import { zodResolver } from "mantine-form-zod-resolver"
+import { useGeolocated } from "react-geolocated"
 
 const schema = z.object({
 	firstName: z.string(),
@@ -34,6 +35,7 @@ const Page = () => {
 			lastName: "",
 			mobileNumber: "",
 			email: "",
+			address: "",
 		},
 		validate: zodResolver(schema),
 		validateInputOnChange: true,
@@ -41,17 +43,75 @@ const Page = () => {
 
 	const [selectedShipping, setSelectedShipping] = useState({ lalamove: false })
 
+	const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+		useGeolocated({
+			positionOptions: {
+				enableHighAccuracy: false,
+			},
+			userDecisionTimeout: 5000,
+		})
+
+	const [hasClickedAddressMap, setHasClickedAddressMap] = useState(false)
+	const [addressLong, setAddressLong] = useState(0)
+	const [addressLat, setAddressLat] = useState(0)
+
+	console.log("Coordinates", coords)
+	console.log("Address", addressLat, addressLong)
+
+	useEffect(() => {
+		if (
+			isGeolocationAvailable &&
+			isGeolocationEnabled &&
+			!hasClickedAddressMap
+		) {
+			setAddressLat(coords?.latitude ?? 0)
+			setAddressLong(coords?.longitude ?? 0)
+		}
+	}, [
+		setAddressLat,
+		setAddressLong,
+		isGeolocationAvailable,
+		isGeolocationEnabled,
+		hasClickedAddressMap,
+		coords,
+	])
+
 	const ctx = useMemo(() => {
 		return {
-			step,
-			setStep,
-			nextStep,
-			prevStep,
+			steps: { step, setStep, nextStep, prevStep },
 			form,
+			hasClickedAddressMap,
+			setHasClickedAddressMap,
 			selectedShipping,
 			setSelectedShipping,
+			address: {
+				addressLong,
+				addressLat,
+				setAddressLat,
+				setAddressLong,
+			},
+			geo: {
+				coords,
+				isGeolocationAvailable,
+				isGeolocationEnabled,
+			},
 		}
-	}, [step, setStep, form, selectedShipping, setSelectedShipping])
+	}, [
+		step,
+		setStep,
+		form,
+		hasClickedAddressMap,
+		setHasClickedAddressMap,
+		selectedShipping,
+		setSelectedShipping,
+		addressLong,
+		addressLat,
+		setAddressLat,
+		setAddressLong,
+		coords,
+		isGeolocationAvailable,
+		isGeolocationEnabled,
+	])
 
 	return (
 		<CheckoutContext.Provider value={ctx}>
@@ -65,11 +125,11 @@ const Page = () => {
 					color="green"
 					styles={{ separator: { borderTop: "1px solid #CCC" } }}
 				>
-					<Stepper.Step label="Customer Info" description="Enter your details">
-						<ShippingOptions />
-					</Stepper.Step>
 					<Stepper.Step label="Shipping" description="Choose shipping method">
 						<CustomerDetails />
+					</Stepper.Step>
+					<Stepper.Step label="Customer Info" description="Enter your details">
+						<ShippingOptions />
 					</Stepper.Step>
 					<Stepper.Step label="Payment" description="Choose payment method">
 						<PaymentOptions />

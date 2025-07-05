@@ -64,7 +64,7 @@ const LMapControl = ({
 		<MapControl position={controlPosition}>
 			<Box mt={5} ml={5}>
 				<Combobox
-					placeholder="Search for a place"
+					placeholder="Search Location"
 					data={predictions}
 					dataKey="placeId"
 					textField="text"

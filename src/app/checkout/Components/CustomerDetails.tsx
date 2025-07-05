@@ -2,19 +2,43 @@ import { CheckoutContext } from "@/Context/context"
 import {
 	Button,
 	Divider,
+	Fieldset,
 	Group,
 	Paper,
 	Space,
 	Stack,
 	Text,
+	Textarea,
 	TextInput,
 } from "@mantine/core"
 import { IconDeviceMobile, IconMail } from "@tabler/icons-react"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import CheckoutWrapper from "./CheckoutWrapper"
 
+import MapControl from "./map/MapControl"
+import MapResult from "./map/MapResult"
+import {
+	APIProvider,
+	ControlPosition,
+	AdvancedMarker,
+	Map,
+} from "@vis.gl/react-google-maps"
+
+const API_KEY: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string
+
+export type AutocompleteMode = { id: string; label: string }
+
 const CustomerDetails = () => {
-	const { nextStep, form } = useContext(CheckoutContext)
+	const {
+		steps: { nextStep },
+		form,
+		hasClickedAddressMap,
+		setHasClickedAddressMap,
+		address: { addressLong, addressLat, setAddressLat, setAddressLong },
+		geo: { isGeolocationEnabled },
+	} = useContext(CheckoutContext)
+	const [selectedPlace, setSelectedPlace] =
+		useState<google.maps.places.Place | null>(null)
 
 	return (
 		<CheckoutWrapper>
@@ -53,6 +77,44 @@ const CustomerDetails = () => {
 						leftSection={<IconMail size={16} />}
 						{...form.getInputProps("email")}
 					/>
+					<Divider />
+					<Textarea
+						label="Address"
+						description="Enter your complete address"
+						required
+						{...form.getInputProps("address")}
+					/>
+					<Divider
+						label="Click to pin your exact location on map for accuracy"
+						labelPosition="left"
+					/>
+					<APIProvider apiKey={API_KEY}>
+						<Map
+							mapId={"49ae42fed52588c3"}
+							style={{ width: "100%", height: 450 }}
+							defaultCenter={{ lat: addressLat, lng: addressLong }}
+							defaultZoom={15}
+							gestureHandling={"greedy"}
+							disableDefaultUI={true}
+							onClick={(e: any) => {
+								console.log("Detail", e)
+								setAddressLong(e?.detail?.latLng.lng)
+								setAddressLat(e?.detail?.latLng.lat)
+								setHasClickedAddressMap(true)
+							}}
+						>
+							<MapControl
+								controlPosition={ControlPosition.TOP_LEFT}
+								onPlaceSelect={setSelectedPlace}
+							/>
+							<MapResult place={selectedPlace} />
+							{(isGeolocationEnabled || hasClickedAddressMap) && (
+								<AdvancedMarker
+									position={{ lat: addressLat, lng: addressLong }}
+								/>
+							)}
+						</Map>
+					</APIProvider>
 				</Stack>
 			</Paper>
 			<Group justify="space-between" mt={20}>
@@ -64,7 +126,9 @@ const CustomerDetails = () => {
 						form.getValues().firstName.length === 0 ||
 						form.getValues().lastName.length === 0 ||
 						form.getValues().mobileNumber.length === 0 ||
-						form.getValues().email.length === 0
+						form.getValues().address.length === 0 ||
+						addressLong === 0 ||
+						addressLat === 0
 					}
 					onClick={nextStep}
 				>
