@@ -2,7 +2,6 @@ import { CheckoutContext } from "@/Context/context"
 import {
 	Button,
 	Divider,
-	Fieldset,
 	Group,
 	Paper,
 	Space,
@@ -15,14 +14,14 @@ import { IconDeviceMobile, IconMail } from "@tabler/icons-react"
 import { useContext, useState } from "react"
 import CheckoutWrapper from "./CheckoutWrapper"
 
-import MapControl from "./map/MapControl"
-import MapResult from "./map/MapResult"
 import {
+	AdvancedMarker,
 	APIProvider,
 	ControlPosition,
-	AdvancedMarker,
 	Map,
 } from "@vis.gl/react-google-maps"
+import MapControl from "./map/MapControl"
+import MapResult from "./map/MapResult"
 
 const API_KEY: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string
 
@@ -34,7 +33,13 @@ const CustomerDetails = () => {
 		form,
 		hasClickedAddressMap,
 		setHasClickedAddressMap,
-		address: { addressLong, addressLat, setAddressLat, setAddressLong },
+		address: {
+			addressLong,
+			addressLat,
+			setAddressLat,
+			setAddressLong,
+			addressMapZoom,
+		},
 		geo: { isGeolocationEnabled },
 	} = useContext(CheckoutContext)
 	const [selectedPlace, setSelectedPlace] =
@@ -93,7 +98,7 @@ const CustomerDetails = () => {
 							mapId={"49ae42fed52588c3"}
 							style={{ width: "100%", height: 450 }}
 							defaultCenter={{ lat: addressLat, lng: addressLong }}
-							defaultZoom={15}
+							defaultZoom={addressMapZoom}
 							gestureHandling={"greedy"}
 							disableDefaultUI={true}
 							onClick={(e: any) => {

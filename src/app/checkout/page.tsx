@@ -18,7 +18,7 @@ const schema = z.object({
 		.number({
 			invalid_type_error: "Must only be a number",
 		})
-		.refine((val) => `${val}`.length === 11, "Must be 11 digit number"),
+		.refine((val) => `${val}`.length === 10, "Must be 11 digit number"),
 	email: z.string().email(),
 })
 
@@ -51,6 +51,7 @@ const Page = () => {
 			userDecisionTimeout: 5000,
 		})
 
+	const [addressMapZoom, setAddressMapZoom] = useState(17)
 	const [hasClickedAddressMap, setHasClickedAddressMap] = useState(false)
 	const [addressLong, setAddressLong] = useState(0)
 	const [addressLat, setAddressLat] = useState(0)
@@ -89,6 +90,8 @@ const Page = () => {
 				addressLat,
 				setAddressLat,
 				setAddressLong,
+				addressMapZoom,
+				setAddressMapZoom,
 			},
 			geo: {
 				coords,
