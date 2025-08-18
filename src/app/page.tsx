@@ -5,7 +5,7 @@ import { HomeContext } from "@/Context/context"
 import directus from "@/directus/directus"
 import Fragments from "@/graphql/fragments"
 import useStore from "@/store/store"
-import { Paper, SimpleGrid, Skeleton, Space, Stack, Text } from "@mantine/core"
+import { Paper, SimpleGrid, Skeleton, Space, Stack } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 
@@ -56,10 +56,7 @@ export default function Page() {
 
 	return (
 		<HomeContext.Provider value={ctx}>
-			<Stack>
-				<Text>Test</Text>
-				{products.isLoading ? <Loading /> : <ProductGrid />}
-			</Stack>
+			<Stack>{products.isLoading ? <Loading /> : <ProductGrid />}</Stack>
 		</HomeContext.Provider>
 	)
 }

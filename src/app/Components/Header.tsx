@@ -20,6 +20,7 @@ import {
 	IconSun,
 	IconVs,
 } from "@tabler/icons-react"
+import Link from "next/link"
 import React, { useContext } from "react"
 
 const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
@@ -34,7 +35,9 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 		<Affix position={{ top: 0, left: 0, right: 0 }} zIndex={1000}>
 			<Paper py={10} px={15} shadow="md" ref={ref}>
 				<Group justify="space-between" align="center">
-					<Title order={3}>MOTOROLD</Title>
+					<Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+						<Title order={3}>MOTOROLD</Title>
+					</Link>
 					<Group gap={10} align="center">
 						<Input
 							pointer
