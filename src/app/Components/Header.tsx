@@ -1,4 +1,4 @@
-import { SiteContext } from "@/Context/context"
+import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import {
 	ActionIcon,

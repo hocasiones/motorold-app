@@ -1,8 +1,8 @@
 "use client"
 
-import { HomeContext } from "@/Context/context"
+import { HomeContext } from "@/context/context"
 import useStore from "@/store/store"
-import { ProductsType } from "@/Types/types"
+import { ProductsType } from "@/types/types"
 import {
 	Box,
 	Button,
@@ -25,9 +25,13 @@ const ProductGrid = () => {
 	const { products } = useContext(HomeContext)
 	const router = useRouter()
 
+	// useEffect(() => {
+	// 	setDisplayedProducts([...(products || []), ...(loadMoreProducts || [])])
+	// }, [products, loadMoreProducts])
+
 	return (
-		<SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="lg">
-			{products?.data?.map((product: ProductsType) => (
+		<SimpleGrid cols={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing="lg">
+			{products?.map((product: ProductsType) => (
 				<Card key={product.id} withBorder shadow="sm">
 					<Card.Section
 						style={(theme) => ({
@@ -47,9 +51,11 @@ const ProductGrid = () => {
 					</Card.Section>
 					<Stack gap={5} mt="lg" justify="space-between" h={`100%`}>
 						<Box>
-							<Title order={4}>{product.product_name}</Title>
+							<Title order={4} size={16}>
+								{product.product_name}
+							</Title>
 							<Rating value={4.5} fractions={2} readOnly />
-							<Text size="xl" fz={24} fw={600} c="red">
+							<Text size="xl" fz={20} fw={600} c="red">
 								{product?.prices && (
 									<NumberFormatter
 										prefix="₱"
@@ -65,7 +71,7 @@ const ProductGrid = () => {
 							gap={10}
 							grow
 							preventGrowOverflow={false}
-							wrap="nowrap"
+							wrap="wrap"
 						>
 							<Button
 								color="blue"

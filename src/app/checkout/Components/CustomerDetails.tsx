@@ -1,4 +1,4 @@
-import { CheckoutContext } from "@/Context/context"
+import { CheckoutContext } from "@/context/context"
 import {
 	Button,
 	Divider,

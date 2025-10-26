@@ -1,4 +1,4 @@
-import { Schema } from "@/Types/types"
+import { Schema } from "@/types/types"
 import { createDirectus, graphql } from "@directus/sdk"
 
 const directus = createDirectus<Schema>(

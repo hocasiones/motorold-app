@@ -7,7 +7,13 @@ import { Footer } from "./Footer"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Notifications } from "@mantine/notifications"
 import { useDisclosure } from "@mantine/hooks"
-import { SiteContext } from "@/Context/context"
+import { SiteContext } from "@/context/context"
+import { createTheme } from "@mantine/core"
+
+const theme = createTheme({
+	/* Put your mantine theme override here */
+	fontFamily: "Roboto, sans-serif",
+})
 
 // Create a client
 const queryClient = new QueryClient()
@@ -41,7 +47,7 @@ const Providers = ({
 	}, [cartDrawerOpened, openCartDrawer, closeCartDrawer])
 
 	return (
-		<MantineProvider>
+		<MantineProvider theme={theme}>
 			<Notifications position="top-center" limit={5} zIndex={2000} />
 			<QueryClientProvider client={queryClient}>
 				<SiteContext.Provider value={ctx}>

@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckoutContext } from "@/Context/context"
+import { CheckoutContext } from "@/context/context"
 import { Stepper } from "@mantine/core"
 import { useEffect, useMemo, useState } from "react"
 import PaymentOptions from "./Components/PaymentOptions"

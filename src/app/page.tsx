@@ -1,33 +1,109 @@
 "use client"
 
 import ProductGrid from "@/app/products/Components/ProductGrid"
-import { HomeContext } from "@/Context/context"
+import { HomeContext } from "@/context/context"
 import directus from "@/directus/directus"
-import Fragments from "@/graphql/fragments"
+import Fragments, { ProductIDsFragments } from "@/graphql/fragments"
 import useStore from "@/store/store"
-import { Paper, SimpleGrid, Skeleton, Space, Stack } from "@mantine/core"
-import { useQuery } from "@tanstack/react-query"
-import { useMemo } from "react"
+import ArrtoArrText from "@/utils/ArrtoArrText"
+import Randomize from "@/utils/Randomize"
+import {
+	Button,
+	Group,
+	Paper,
+	SimpleGrid,
+	Skeleton,
+	Space,
+	Stack,
+} from "@mantine/core"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { useEffect, useMemo, useState } from "react"
 
 export default function Page() {
 	const store: any = useStore()
+	const [productIDs, setProductIDs] = useState<string[]>([])
+	const [products, setProducts] = useState<any[]>([])
 
-	const products = useQuery({
+	const queryProducts = useQuery({
 		queryKey: ["products"],
 		queryFn: async () => {
+			const { products: prodIDs } = await directus.query(`
+			${ProductIDsFragments}
+			query {
+				products (limit: -1, filter: {
+					status:{
+						_eq: "published"
+					}
+				}) {
+					...ProductIDsFragment
+				}
+			}
+			`)
+
+			const randomIDs = Randomize(prodIDs).slice(0, store.fetchMaxCount)
+			setProductIDs(randomIDs)
+
 			const { products } = await directus.query(`
 			${Fragments}
 			query {
-				products (limit: ${store.fetchMaxCount}) {
+				products (filter: {
+					id: {
+						_in: ${ArrtoArrText(randomIDs)}
+					},
+				}) {
 					...ProductFragment
 				}
 			}
 			`)
+
 			return products
 		},
 	})
 
-	// console.log("Products:", products.data)
+	const mutationProducts = useMutation({
+		mutationFn: async () => {
+			const { products: prodIDs } = await directus.query(`
+			${ProductIDsFragments}
+			query {
+				products (limit: -1, filter: {
+					id: {
+						_nin: ${ArrtoArrText(productIDs)}
+					},
+					status:{
+						_eq: "published"
+					}
+				}) {
+					...ProductIDsFragment
+				}
+			}
+			`)
+
+			const randomIDs = Randomize(prodIDs).slice(0, store.fetchMaxCount)
+			setProductIDs((prev) => [...prev, ...randomIDs])
+
+			const { products } = await directus.query(`
+			${Fragments}
+			query {
+				products (filter: {
+					id: {
+						_in: ${ArrtoArrText(randomIDs)}
+					},
+				}) {
+					...ProductFragment
+				}
+			}
+			`)
+
+			return products
+		},
+		onSuccess: (data: any[]) => {
+			setProducts((prev) => [...prev, ...data])
+		},
+	})
+
+	useEffect(() => {
+		setProducts(queryProducts?.data)
+	}, [queryProducts?.data])
 
 	const ctx = useMemo(() => {
 		return {
@@ -56,7 +132,24 @@ export default function Page() {
 
 	return (
 		<HomeContext.Provider value={ctx}>
-			<Stack>{products.isLoading ? <Loading /> : <ProductGrid />}</Stack>
+			<Stack>
+				{queryProducts.isLoading ? <Loading /> : <ProductGrid />}
+				{queryProducts.isSuccess && (
+					<Group justify="center" mt={20}>
+						<Button
+							color="violet"
+							size="md"
+							w={250}
+							loading={queryProducts.isLoading || mutationProducts.isPending}
+							onClick={() => {
+								mutationProducts.mutate()
+							}}
+						>
+							Load More Products
+						</Button>
+					</Group>
+				)}
+			</Stack>
 		</HomeContext.Provider>
 	)
 }

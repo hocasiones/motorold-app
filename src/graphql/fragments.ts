@@ -14,9 +14,8 @@ fragment ProductFragment on products {
 	product_name
 	description
 	has_variations
-	categories {
+	product_categories {
 		product_categories_id {
-			id
 			category_name
 		}
 	}
@@ -27,7 +26,6 @@ fragment ProductFragment on products {
 		product_stocks_id {
 			id
 			stock
-			shelf
 			store {
 				id
 				store_name
@@ -51,7 +49,6 @@ fragment ProductFragment on products {
 				product_stocks_id {
 					id
 					stock
-					shelf
 					store {
 						id
 						store_name
@@ -63,4 +60,11 @@ fragment ProductFragment on products {
 }
 `
 
+const ProductIDsFragments = `
+fragment ProductIDsFragment on products {
+	id
+}
+`
+
+export { ProductIDsFragments }
 export default Fragments

@@ -1,5 +1,5 @@
 import useStore from "@/store/store"
-import { ProductsType } from "@/Types/types"
+import { ProductsType } from "@/types/types"
 import {
 	ActionIcon,
 	Avatar,
