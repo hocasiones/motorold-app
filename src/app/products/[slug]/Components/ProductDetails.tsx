@@ -12,6 +12,7 @@ import {
 	Stack,
 	Text,
 	Title,
+	Tooltip,
 } from "@mantine/core"
 import { useCounter } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
@@ -66,27 +67,38 @@ const ProductDetails = () => {
 					)}
 					{product?.has_variations && (
 						<Group wrap="wrap" gap={10}>
-							{product?.variations?.map((variant: any) => (
-								<ActionIcon
-									key={variant?.product_variations_id?.id}
-									size={50}
-									color={
-										selectedVariant?.id === variant?.product_variations_id?.id
-											? "red"
-											: "transparent"
-									}
-									variant="filled"
-									onClick={() => {
-										setSelectedVariant(variant?.product_variations_id)
-									}}
-								>
-									<Avatar
-										src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${variant?.product_variations_id?.image?.id}`}
-										radius="sm"
-										size={47}
-									/>
-								</ActionIcon>
-							))}
+							{product?.variations?.map((variant: any) => {
+								const image = variant?.product_variations_id?.image
+								return (
+									<Tooltip
+										key={variant?.product_variations_id?.id}
+										label={variant?.product_variations_id?.variation_name}
+									>
+										<ActionIcon
+											size={50}
+											color={
+												selectedVariant?.id ===
+												variant?.product_variations_id?.id
+													? "red"
+													: "transparent"
+											}
+											variant="filled"
+											onClick={() => {
+												setSelectedVariant(variant?.product_variations_id)
+											}}
+										>
+											<Avatar
+												src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${
+													image?.id || product?.featured_image?.id
+												}
+											}?width=50&height=50&fit=cover`}
+												radius="sm"
+												size={50}
+											/>
+										</ActionIcon>
+									</Tooltip>
+								)
+							})}
 						</Group>
 					)}
 					<ActionIcon.Group>

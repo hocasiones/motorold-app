@@ -40,7 +40,7 @@ const ProductGrid = () => {
 						})}
 					>
 						<Image
-							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=600&height=600&fit=cover`}
+							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=300&height=300&fit=cover`}
 							h={`100%`}
 							alt={product.product_name}
 							onClick={() => {

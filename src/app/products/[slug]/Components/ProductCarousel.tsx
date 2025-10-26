@@ -9,12 +9,14 @@ const ProductCarousel = () => {
 		<Paper shadow="md" p="md">
 			<Carousel withControls={true} withIndicators>
 				<Carousel.Slide>
-					<Image
-						src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=600&height=600&fit=cover`}
-						width={600}
-						height={600}
-						alt={product?.product_name}
-					/>
+					{product?.featured_image && (
+						<Image
+							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=600&height=600&fit=cover`}
+							width={600}
+							height={600}
+							alt={product?.product_name}
+						/>
+					)}
 				</Carousel.Slide>
 				{product?.images?.map((image: any) => (
 					<Carousel.Slide key={image?.directus_files_id?.id}>
