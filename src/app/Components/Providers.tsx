@@ -9,6 +9,7 @@ import { Notifications } from "@mantine/notifications"
 import { useDisclosure } from "@mantine/hooks"
 import { SiteContext } from "@/context/context"
 import { createTheme } from "@mantine/core"
+import MobileMenu from "./MobileMenu"
 
 const theme = createTheme({
 	/* Put your mantine theme override here */
@@ -48,7 +49,7 @@ const Providers = ({
 
 	return (
 		<MantineProvider theme={theme}>
-			<Notifications position="top-center" limit={5} zIndex={2000} />
+			<Notifications position="top-center" limit={5} zIndex={99999} />
 			<QueryClientProvider client={queryClient}>
 				<SiteContext.Provider value={ctx}>
 					<Header ref={ref} />
@@ -61,6 +62,7 @@ const Providers = ({
 						<Container size="xl">{children}</Container>
 					</Box>
 					<Footer />
+					<MobileMenu />
 				</SiteContext.Provider>
 			</QueryClientProvider>
 		</MantineProvider>

@@ -1,6 +1,7 @@
 import { Anchor, Box, Container, Group } from "@mantine/core"
 import { MantineLogo } from "@mantinex/mantine-logo"
 import CartDrawer from "./CartDrawer"
+import { useMediaQuery } from "@mantine/hooks"
 
 const links = [
 	{ link: "#", label: "Contact" },
@@ -10,6 +11,8 @@ const links = [
 ]
 
 export function Footer() {
+	const isMobile = useMediaQuery("(max-width: 767px)")
+
 	const items = links.map((link) => (
 		<Anchor<"a">
 			c="dimmed"
@@ -23,7 +26,7 @@ export function Footer() {
 	))
 
 	return (
-		<Box>
+		<Box pb={isMobile ? 36 : 0}>
 			<Container size="xl">
 				<Group justify="space-between" align="center" py="md">
 					<MantineLogo size={28} />

@@ -1,3 +1,4 @@
+import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import { ProductsType } from "@/types/types"
 import {
@@ -18,7 +19,7 @@ import { notifications } from "@mantine/notifications"
 import { IconEye, IconShoppingCart } from "@tabler/icons-react"
 import _ from "lodash"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 const initialMinValue = 99999999999
 
@@ -29,6 +30,7 @@ const ProductCard = ({ product }: any) => {
 	const router = useRouter()
 	const [minVariantPrice, setMinVariantPrice] = useState<number>(0)
 	const [maxVariantPrice, setMaxVariantPrice] = useState<number>(0)
+	const { openCartDrawer } = useContext(SiteContext).cartDrawer
 
 	// console.log(minVariantPrice, maxVariantPrice)
 	// console.log(product)
@@ -154,6 +156,7 @@ const ProductCard = ({ product }: any) => {
 												color: "green",
 												icon: <IconShoppingCart size={16} />,
 											})
+											openCartDrawer()
 										}}
 									>
 										ADD TO CART

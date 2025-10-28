@@ -1,3 +1,4 @@
+import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import { ProductsType } from "@/types/types"
 import {
@@ -22,7 +23,7 @@ import {
 	IconShoppingCart,
 } from "@tabler/icons-react"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 // const getMin = (a, b) => Math.min(a, b);
 // const getMax = (a, b) => Math.max(a, b);
@@ -34,9 +35,9 @@ const ProductDetails = () => {
 	const product = useStore((state: any) => state.singleProduct)
 	const [quantity, { increment, decrement }] = useCounter(1, { min: 1 })
 	const [selectedVariant, setSelectedVariant] = useState<any>(null)
-
 	const [minVariantPrice, setMinVariantPrice] = useState<number>(0)
 	const [maxVariantPrice, setMaxVariantPrice] = useState<number>(0)
+	const { openCartDrawer } = useContext(SiteContext).cartDrawer
 
 	// console.log(minVariantPrice, maxVariantPrice)
 	// console.log(product)
@@ -244,6 +245,7 @@ const ProductDetails = () => {
 								color: "green",
 								icon: <IconShoppingCart size={16} />,
 							})
+							openCartDrawer()
 						}}
 					>
 						ADD TO CART

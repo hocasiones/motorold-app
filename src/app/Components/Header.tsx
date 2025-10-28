@@ -13,6 +13,7 @@ import {
 	useComputedColorScheme,
 	useMantineColorScheme,
 } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
 import {
 	IconMoon,
 	IconSearch,
@@ -31,15 +32,16 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 		getInitialValueInEffect: true,
 	})
 	const { openCartDrawer } = useContext(SiteContext).cartDrawer
+	const isMobile = useMediaQuery("(max-width: 767px)")
 
 	return (
 		<Affix position={{ top: 0, left: 0, right: 0 }} zIndex={1000}>
 			<Paper py={10} px={15} shadow="md" ref={ref}>
-				<Group justify="space-between" align="center">
+				<Group justify={isMobile ? "center" : "space-between"} align="center">
 					<Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
 						<Image src={logo.src} w={200} h={`100%`} alt="MOTOROLD" />
 					</Link>
-					<Group gap={10} align="center">
+					<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>
 						<Input
 							pointer
 							placeholder="Search"
