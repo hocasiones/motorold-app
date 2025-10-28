@@ -58,6 +58,7 @@ export default function Page() {
 
 			return products
 		},
+		refetchOnWindowFocus: false,
 	})
 
 	const mutationProducts = useMutation({
@@ -79,6 +80,7 @@ export default function Page() {
 			`)
 
 			const randomIDs = Randomize(prodIDs).slice(0, store.fetchMaxCount)
+
 			setProductIDs((prev) => [...prev, ...randomIDs])
 
 			const { products } = await directus.query(`
@@ -135,17 +137,17 @@ export default function Page() {
 			<Stack>
 				{queryProducts.isLoading ? <Loading /> : <ProductGrid />}
 				{queryProducts.isSuccess && (
-					<Group justify="center" mt={20}>
+					<Group justify="center" mt={20} grow>
 						<Button
+							variant="outline"
 							color="violet"
-							size="md"
-							w={250}
+							size="sm"
 							loading={queryProducts.isLoading || mutationProducts.isPending}
 							onClick={() => {
 								mutationProducts.mutate()
 							}}
 						>
-							Load More Products
+							LOAD MORE PRODUCTS
 						</Button>
 					</Group>
 				)}

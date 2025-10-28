@@ -1,13 +1,14 @@
+import logo from "@/../public/Logo.png"
 import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import {
 	ActionIcon,
 	Affix,
 	Group,
+	Image,
 	Indicator,
 	Input,
 	Paper,
-	Title,
 	Tooltip,
 	useComputedColorScheme,
 	useMantineColorScheme,
@@ -36,7 +37,7 @@ const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
 			<Paper py={10} px={15} shadow="md" ref={ref}>
 				<Group justify="space-between" align="center">
 					<Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-						<Title order={3}>MOTOROLD</Title>
+						<Image src={logo.src} w={200} h={`100%`} alt="MOTOROLD" />
 					</Link>
 					<Group gap={10} align="center">
 						<Input

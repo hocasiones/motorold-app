@@ -22,17 +22,82 @@ import {
 	IconShoppingCart,
 } from "@tabler/icons-react"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import _ from "lodash"
+
+// const getMin = (a, b) => Math.min(a, b);
+// const getMax = (a, b) => Math.max(a, b);
+
+const initialMinValue = 99999999999
 
 const ProductDetails = () => {
 	const store: any = useStore()
 	const product = useStore((state: any) => state.singleProduct)
-	const [quantity, { increment, decrement }] = useCounter(0, { min: 0 })
-	const [selectedVariant, setSelectedVariant] = useState<any>({})
+	const [quantity, { increment, decrement }] = useCounter(1, { min: 1 })
+	const [selectedVariant, setSelectedVariant] = useState<any>(null)
+
+	const [minVariantPrice, setMinVariantPrice] = useState<number>(0)
+	const [maxVariantPrice, setMaxVariantPrice] = useState<number>(0)
+
+	// console.log(minVariantPrice, maxVariantPrice)
+	// console.log(product)
+	// console.log(selectedVariant)
+	// console.log(quantity)
+
+	useEffect(() => {
+		if (product?.has_variations) {
+			const min = product?.variations?.reduce((acc: any, curr: any) => {
+				const currStorePrice = curr?.product_variations_id?.prices?.store_price
+				return currStorePrice < acc ? currStorePrice : acc
+			}, initialMinValue)
+			setMinVariantPrice(min || 0)
+			const max = product?.variations?.reduce((acc: any, curr: any) => {
+				const currStorePrice = curr?.product_variations_id?.prices?.store_price
+				return currStorePrice > acc ? currStorePrice : acc
+			}, 0)
+			setMaxVariantPrice(max || 0)
+		}
+	}, [product?.has_variations, product?.variations])
+
+	const Price = () => {
+		if (selectedVariant) {
+			return (
+				<NumberFormatter
+					prefix="₱"
+					value={selectedVariant?.prices?.store_price * quantity}
+					thousandSeparator
+				/>
+			)
+		} else if (product?.has_variations) {
+			return (
+				<>
+					<NumberFormatter
+						prefix="₱"
+						value={minVariantPrice}
+						thousandSeparator
+					/>
+					-
+					<NumberFormatter
+						prefix="₱"
+						value={maxVariantPrice}
+						thousandSeparator
+					/>
+				</>
+			)
+		} else {
+			return (
+				<NumberFormatter
+					prefix="₱"
+					value={product?.prices?.store_price}
+					thousandSeparator
+				/>
+			)
+		}
+	}
 
 	return (
 		<Stack>
-			<Rating value={4.5} fractions={2} readOnly />
+			<Rating value={4.5} fractions={2} readOnly mt={10} />
 			<Group>
 				{product?.categories?.map((category: any) => (
 					<Badge
@@ -50,13 +115,7 @@ const ProductDetails = () => {
 				{product?.product_name}
 			</Title>
 			<Text fz={36} fw={600} c="red">
-				{product?.prices && (
-					<NumberFormatter
-						prefix="₱"
-						value={product?.prices?.store_price}
-						thousandSeparator
-					/>
-				)}
+				<Price />
 			</Text>
 			<Paper shadow="xs" p="md" radius={5}>
 				<Stack>
@@ -75,7 +134,7 @@ const ProductDetails = () => {
 										label={variant?.product_variations_id?.variation_name}
 									>
 										<ActionIcon
-											size={50}
+											size={70}
 											color={
 												selectedVariant?.id ===
 												variant?.product_variations_id?.id
@@ -86,14 +145,15 @@ const ProductDetails = () => {
 											onClick={() => {
 												setSelectedVariant(variant?.product_variations_id)
 											}}
+											style={{ borderWidth: 4 }}
 										>
 											<Avatar
 												src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${
 													image?.id || product?.featured_image?.id
 												}
-											}?width=50&height=50&fit=cover`}
+											}?width=140&height=140&fit=cover`}
 												radius="sm"
-												size={50}
+												size={70}
 											/>
 										</ActionIcon>
 									</Tooltip>
@@ -128,12 +188,11 @@ const ProductDetails = () => {
 						</ActionIcon>
 					</ActionIcon.Group>
 					<Button
+						size="md"
 						color="red"
 						radius={0}
 						leftSection={<IconShoppingCart size={24} />}
-						disabled={
-							quantity <= 0 || (!product?.has_variations && !selectedVariant)
-						}
+						disabled={product?.has_variations && !selectedVariant}
 						onClick={() => {
 							if (!product?.has_variations) {
 								const targetIndex = store?.cartList?.findIndex(

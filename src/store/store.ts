@@ -41,7 +41,7 @@ const useStore = create(
 					setIsRemembered: (isRemembered) => set({ isRemembered }),
 					darkMode: false,
 					setDarkMode: (darkMode) => set({ darkMode }),
-					fetchMaxCount: 8,
+					fetchMaxCount: 12,
 					setFetchMaxCount: (fetchMaxCount) => set({ fetchMaxCount }),
 					cartList: [],
 					setCartList: (items) => set({ items }),
