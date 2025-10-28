@@ -1,4 +1,5 @@
 import useStore from "@/store/store"
+import { ProductsType } from "@/types/types"
 import {
 	Button,
 	Card,
@@ -13,6 +14,7 @@ import {
 	useMantineTheme,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
+import { notifications } from "@mantine/notifications"
 import { IconEye, IconShoppingCart } from "@tabler/icons-react"
 import _ from "lodash"
 import { useRouter } from "next/navigation"
@@ -127,6 +129,32 @@ const ProductCard = ({ product }: any) => {
 										leftSection={
 											<IconShoppingCart size={20} fontWeight={400} />
 										}
+										onClick={() => {
+											const targetIndex = store?.cartList?.findIndex(
+												(item: ProductsType) => item.id === product.id
+											)
+											if (targetIndex > -1) {
+												// If the product is already in the cart, update the quantity
+												store?.setCartListItem(targetIndex, {
+													...store?.cartList[targetIndex],
+													quantity: store?.cartList[targetIndex].quantity + 1,
+													selectedVariant: product,
+												})
+											} else {
+												// If the product is not in the cart, add it with the current quantity
+												store?.setAppendCartList({
+													...product,
+													quantity: 1,
+													selectedVariant: product,
+												})
+											}
+											notifications.show({
+												title: "Product Added to Cart",
+												message: `${product.product_name} has been added to your cart.`,
+												color: "green",
+												icon: <IconShoppingCart size={16} />,
+											})
+										}}
 									>
 										ADD TO CART
 									</Button>
