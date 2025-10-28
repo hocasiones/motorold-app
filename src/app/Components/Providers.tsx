@@ -1,14 +1,13 @@
 "use client"
 
-import { Box, Container, MantineProvider } from "@mantine/core"
-import React, { useEffect, useMemo } from "react"
-import Header from "./Header"
-import { Footer } from "./Footer"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { Notifications } from "@mantine/notifications"
-import { useDisclosure } from "@mantine/hooks"
 import { SiteContext } from "@/context/context"
-import { createTheme } from "@mantine/core"
+import { Box, Container, createTheme, MantineProvider } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { Notifications } from "@mantine/notifications"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import React, { useMemo } from "react"
+import { Footer } from "./Footer"
+import Header from "./Header"
 import MobileMenu from "./MobileMenu"
 
 const theme = createTheme({
@@ -24,18 +23,8 @@ const Providers = ({
 }: Readonly<{
 	children: React.ReactNode
 }>) => {
-	const ref = React.useRef<HTMLDivElement>(null)
-	const [headerHeight, setHeaderHeight] = React.useState<number>(0)
 	const [cartDrawerOpened, { open: openCartDrawer, close: closeCartDrawer }] =
 		useDisclosure(false)
-
-	// This effect is used to set the header height after the component mounts
-	useEffect(() => {
-		setTimeout(() => {
-			if (!ref.current) return
-			setHeaderHeight(ref.current?.clientHeight)
-		}, 0)
-	}, [ref])
 
 	const ctx = useMemo(() => {
 		return {
@@ -52,13 +41,9 @@ const Providers = ({
 			<Notifications position="top-center" limit={5} zIndex={99999} />
 			<QueryClientProvider client={queryClient}>
 				<SiteContext.Provider value={ctx}>
-					<Header ref={ref} />
-					<Box
-						py={20}
-						style={{
-							marginTop: headerHeight,
-						}}
-					>
+					<Box></Box>
+					<Header />
+					<Box py={20}>
 						<Container size="xl">{children}</Container>
 					</Box>
 					<Footer />

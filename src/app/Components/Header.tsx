@@ -3,7 +3,6 @@ import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import {
 	ActionIcon,
-	Affix,
 	Group,
 	Image,
 	Indicator,
@@ -23,91 +22,91 @@ import {
 	IconVs,
 } from "@tabler/icons-react"
 import Link from "next/link"
-import React, { useContext } from "react"
+import { useContext } from "react"
 
-const Header = ({ ref }: Readonly<{ ref: React.Ref<HTMLDivElement> }>) => {
+const Header = () => {
 	const store: any = useStore()
 	const { colorScheme, setColorScheme } = useMantineColorScheme()
 	const computedColorScheme = useComputedColorScheme("light", {
 		getInitialValueInEffect: true,
 	})
-	const { openCartDrawer } = useContext(SiteContext).cartDrawer
+	const {
+		cartDrawer: { openCartDrawer },
+	} = useContext(SiteContext)
 	const isMobile = useMediaQuery("(max-width: 767px)")
 
 	return (
-		<Affix position={{ top: 0, left: 0, right: 0 }} zIndex={1000}>
-			<Paper py={10} px={15} shadow="md" ref={ref}>
-				<Group justify={isMobile ? "center" : "space-between"} align="center">
-					<Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-						<Image src={logo.src} w={200} h={`100%`} alt="MOTOROLD" />
-					</Link>
-					<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>
-						<Input
-							pointer
-							placeholder="Search"
-							leftSection={<IconSearch size={20} />}
-							w={150}
-							readOnly
-						/>
-						<Tooltip label="Cart" zIndex={1000}>
-							<Indicator
-								label={store.cartList?.length ?? 0}
-								size={16}
-								color="red"
-								mb={-6}
-							>
-								<ActionIcon
-									variant="subtle"
-									color="blue"
-									radius="sm"
-									onClick={openCartDrawer}
-								>
-									<IconShoppingCart />
-								</ActionIcon>
-							</Indicator>
-						</Tooltip>
-						<Tooltip label="Compare" zIndex={1000}>
-							<ActionIcon variant="subtle" color="blue" radius="sm">
-								<IconVs />
-							</ActionIcon>
-						</Tooltip>
-						<Tooltip label="Wishlist" zIndex={1000}>
-							<ActionIcon variant="subtle" color="blue" radius="sm">
-								<IconShoppingBagHeart />
-							</ActionIcon>
-						</Tooltip>
-						<Tooltip label="Lighting" zIndex={1000}>
+		<Paper py={10} px={15} shadow="md">
+			<Group justify={isMobile ? "center" : "space-between"} align="center">
+				<Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+					<Image src={logo.src} w={200} h={`100%`} alt="MOTOROLD" />
+				</Link>
+				<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>
+					<Input
+						pointer
+						placeholder="Search"
+						leftSection={<IconSearch size={20} />}
+						w={150}
+						readOnly
+					/>
+					<Tooltip label="Cart" zIndex={1000}>
+						<Indicator
+							label={store.cartList?.length ?? 0}
+							size={16}
+							color="red"
+							mb={-6}
+						>
 							<ActionIcon
 								variant="subtle"
 								color="blue"
 								radius="sm"
-								onClick={() =>
-									setColorScheme(
-										computedColorScheme === "light" ? "dark" : "light"
-									)
-								}
+								onClick={openCartDrawer}
 							>
-								{colorScheme === "light" ? (
-									<IconSun size={20} />
-								) : (
-									<IconMoon size={20} stroke={1.5} />
-								)}
+								<IconShoppingCart />
 							</ActionIcon>
-						</Tooltip>
+						</Indicator>
+					</Tooltip>
+					<Tooltip label="Compare" zIndex={1000}>
+						<ActionIcon variant="subtle" color="blue" radius="sm">
+							<IconVs />
+						</ActionIcon>
+					</Tooltip>
+					<Tooltip label="Wishlist" zIndex={1000}>
+						<ActionIcon variant="subtle" color="blue" radius="sm">
+							<IconShoppingBagHeart />
+						</ActionIcon>
+					</Tooltip>
+					<Tooltip label="Lighting" zIndex={1000}>
 						<ActionIcon
 							variant="subtle"
 							color="blue"
 							radius="sm"
-							onClick={() => {
-								store.clear()
-							}}
+							onClick={() =>
+								setColorScheme(
+									computedColorScheme === "light" ? "dark" : "light"
+								)
+							}
 						>
-							<IconShoppingBagHeart />
+							{colorScheme === "light" ? (
+								<IconSun size={20} />
+							) : (
+								<IconMoon size={20} stroke={1.5} />
+							)}
 						</ActionIcon>
-					</Group>
+					</Tooltip>
+					<ActionIcon
+						variant="subtle"
+						color="blue"
+						radius="sm"
+						onClick={() => {
+							store.clear()
+						}}
+					>
+						<IconShoppingBagHeart />
+					</ActionIcon>
 				</Group>
-			</Paper>
-		</Affix>
+			</Group>
+		</Paper>
 	)
 }
 

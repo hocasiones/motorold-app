@@ -28,10 +28,20 @@ const CartDrawer = () => {
 			onClose={closeCartDrawer}
 			position="right"
 			zIndex={3000}
-			styles={{ body: { paddingBottom: 0 }, title: { fontWeight: "bold" } }}
+			styles={{
+				body: { paddingBottom: 0, flexGrow: 2 },
+				title: { fontWeight: "bold" },
+				content: {
+					height: "100%",
+					display: "flex",
+					flexDirection: "column",
+					justifyContent: "space-between",
+				},
+			}}
+			h={`100%`}
 			title="Shopping Cart"
 		>
-			<Box>
+			<Stack justify="space-between" h={`100%`}>
 				<Stack gap={10} mb={10}>
 					{store?.cartList?.map((item: any, index: number) => (
 						<Stack
@@ -123,50 +133,50 @@ const CartDrawer = () => {
 						</Stack>
 					))}
 				</Stack>
-			</Box>
-			{/* <Divider /> */}
-			<Stack
-				bg="white"
-				mt={20}
-				py={10}
-				gap={10}
-				style={{
-					position: "sticky",
-					bottom: 0,
-					left: 0,
-					right: 0,
-					borderTop: "1px solid var(--mantine-color-gray-3)",
-				}}
-			>
-				<Group justify="space-between" align="center">
-					<Text size="md">
-						Order Items:{" "}
-						<Text fw={700} span>
-							{store?.cartList?.length ?? 0}
-						</Text>
-					</Text>
-					<Text size="lg">
-						Sub Total:{" "}
-						<Text c="red" fw={700} span>
-							<NumberFormatter
-								value={store?.getCartListSubTotal()}
-								prefix="₱"
-								thousandSeparator
-							/>
-						</Text>
-					</Text>
-				</Group>
-				<Button
-					size="md"
-					radius={0}
-					fullWidth
-					onClick={() => {
-						closeCartDrawer()
-						router.push("/checkout")
+				{/* <Divider /> */}
+				<Stack
+					bg="white"
+					mt={20}
+					py={10}
+					gap={10}
+					style={{
+						position: "sticky",
+						bottom: 0,
+						left: 0,
+						right: 0,
+						borderTop: "1px solid var(--mantine-color-gray-3)",
 					}}
 				>
-					PROCEED TO CHECKOUT
-				</Button>
+					<Group justify="space-between" align="center">
+						<Text size="md">
+							Order Items:{" "}
+							<Text fw={700} span>
+								{store?.cartList?.length ?? 0}
+							</Text>
+						</Text>
+						<Text size="lg">
+							Sub Total:{" "}
+							<Text c="red" fw={700} span>
+								<NumberFormatter
+									value={store?.getCartListSubTotal()}
+									prefix="₱"
+									thousandSeparator
+								/>
+							</Text>
+						</Text>
+					</Group>
+					<Button
+						size="md"
+						radius={0}
+						fullWidth
+						onClick={() => {
+							closeCartDrawer()
+							router.push("/checkout")
+						}}
+					>
+						PROCEED TO CHECKOUT
+					</Button>
+				</Stack>
 			</Stack>
 		</Drawer>
 	)
