@@ -7,7 +7,11 @@ const ProductCarousel = () => {
 
 	return (
 		<Paper shadow="md" p="md">
-			<Carousel withControls={true} withIndicators>
+			<Carousel
+				withIndicators
+				controlSize={36}
+				withControls={product?.images?.length > 0}
+			>
 				<Carousel.Slide>
 					{product?.featured_image && (
 						<Image

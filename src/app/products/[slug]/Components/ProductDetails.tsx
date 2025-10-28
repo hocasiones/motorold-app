@@ -23,7 +23,6 @@ import {
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import _ from "lodash"
 
 // const getMin = (a, b) => Math.min(a, b);
 // const getMax = (a, b) => Math.max(a, b);
@@ -68,21 +67,25 @@ const ProductDetails = () => {
 					thousandSeparator
 				/>
 			)
-		} else if (product?.has_variations) {
+		} else if (product?.has_variations && minVariantPrice !== maxVariantPrice) {
 			return (
 				<>
 					<NumberFormatter
 						prefix="₱"
 						value={minVariantPrice}
 						thousandSeparator
-					/>
-					-
+					/>{" "}
+					-{" "}
 					<NumberFormatter
 						prefix="₱"
 						value={maxVariantPrice}
 						thousandSeparator
 					/>
 				</>
+			)
+		} else if (product?.has_variations && minVariantPrice === maxVariantPrice) {
+			return (
+				<NumberFormatter prefix="₱" value={minVariantPrice} thousandSeparator />
 			)
 		} else {
 			return (

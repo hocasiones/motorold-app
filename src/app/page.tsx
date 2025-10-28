@@ -115,8 +115,11 @@ export default function Page() {
 
 	const Loading = () => {
 		return (
-			<SimpleGrid cols={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing="xl">
-				{Array.from({ length: store.fetchMaxCount }).map((_, index) => (
+			<SimpleGrid
+				cols={{ base: 2, xs: 3, sm: 4, md: 5, lg: 6, xl: 6 }}
+				spacing="xl"
+			>
+				{Array.from({ length: store?.fetchMaxCount }).map((_, index) => (
 					<Paper key={`key-${index + 1}`} p="md" shadow="sm">
 						<Skeleton height={160} />
 						<Stack gap={5} mt="lg">

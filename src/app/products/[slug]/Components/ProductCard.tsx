@@ -10,6 +10,7 @@ import {
 	Stack,
 	Text,
 	Title,
+	useMantineTheme,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { IconEye, IconShoppingCart } from "@tabler/icons-react"
@@ -17,7 +18,10 @@ import _ from "lodash"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
+const initialMinValue = 99999999999
+
 const ProductCard = ({ product }: any) => {
+	const theme = useMantineTheme()
 	const store: any = useStore()
 	const { hovered, ref } = useHover()
 	const router = useRouter()
@@ -31,18 +35,48 @@ const ProductCard = ({ product }: any) => {
 		if (product?.has_variations) {
 			const min = product?.variations?.reduce((acc: any, curr: any) => {
 				const currStorePrice = curr?.product_variations_id?.prices?.store_price
-				const accStorePrice = acc?.product_variations_id?.prices?.store_price
-				return currStorePrice < accStorePrice ? currStorePrice : accStorePrice
-			})
+				return currStorePrice < acc ? currStorePrice : acc
+			}, initialMinValue)
 			setMinVariantPrice(min || 0)
 			const max = product?.variations?.reduce((acc: any, curr: any) => {
 				const currStorePrice = curr?.product_variations_id?.prices?.store_price
-				const accStorePrice = acc?.product_variations_id?.prices?.store_price
-				return currStorePrice > accStorePrice ? currStorePrice : accStorePrice
-			})
+				return currStorePrice > acc ? currStorePrice : acc
+			}, 0)
 			setMaxVariantPrice(max || 0)
 		}
 	}, [product?.has_variations, product?.variations])
+
+	const Price = () => {
+		if (product?.has_variations && minVariantPrice !== maxVariantPrice) {
+			return (
+				<>
+					<NumberFormatter
+						prefix="₱"
+						value={minVariantPrice}
+						thousandSeparator
+					/>{" "}
+					-{" "}
+					<NumberFormatter
+						prefix="₱"
+						value={maxVariantPrice}
+						thousandSeparator
+					/>
+				</>
+			)
+		} else if (product?.has_variations && minVariantPrice === maxVariantPrice) {
+			return (
+				<NumberFormatter prefix="₱" value={minVariantPrice} thousandSeparator />
+			)
+		} else {
+			return (
+				<NumberFormatter
+					prefix="₱"
+					value={product?.prices?.store_price}
+					thousandSeparator
+				/>
+			)
+		}
+	}
 
 	return (
 		<Card withBorder shadow="sm" ref={ref}>
@@ -101,11 +135,19 @@ const ProductCard = ({ product }: any) => {
 						</Overlay>
 					)}
 					<Stack justify="space-between" h={`100%`}>
-						<Title order={4} size={14} style={{ fontWeight: 400 }}>
-							{_.truncate(product.product_name, { length: 50 })}
-						</Title>
-						<Group justify="space-between" align="end">
-							<Rating value={4.5} fractions={2} readOnly size={14} />
+						<Stack gap={3}>
+							<Rating value={4.5} fractions={2} readOnly size={12} mb={3} />
+							<Title order={4} size={14} style={{ fontWeight: 400 }}>
+								{_.truncate(product.product_name, { length: 50 })}
+							</Title>
+							<Text size="xs" c={theme.colors.gray[6]}>
+								{
+									product?.product_categories[0]?.product_categories_id
+										?.category_name
+								}
+							</Text>
+						</Stack>
+						<Group justify="end" align="end">
 							<Text
 								size="xl"
 								fz={18}
@@ -113,27 +155,7 @@ const ProductCard = ({ product }: any) => {
 								c="red"
 								style={{ lineHeight: 1 }}
 							>
-								{product?.has_variations ? (
-									<>
-										<NumberFormatter
-											prefix="₱"
-											value={minVariantPrice}
-											thousandSeparator
-										/>{" "}
-										-{" "}
-										<NumberFormatter
-											prefix="₱"
-											value={maxVariantPrice}
-											thousandSeparator
-										/>
-									</>
-								) : (
-									<NumberFormatter
-										prefix="₱"
-										value={product?.prices?.store_price}
-										thousandSeparator
-									/>
-								)}
+								<Price />
 							</Text>
 						</Group>
 					</Stack>
