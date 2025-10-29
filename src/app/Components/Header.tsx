@@ -3,10 +3,10 @@ import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import {
 	ActionIcon,
+	Button,
 	Group,
 	Image,
 	Indicator,
-	Input,
 	Paper,
 	Tooltip,
 	useComputedColorScheme,
@@ -22,10 +22,13 @@ import {
 	IconVs,
 } from "@tabler/icons-react"
 import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { useContext } from "react"
 
 const Header = () => {
 	const store: any = useStore()
+	const router = useRouter()
+	const pathName = usePathname()
 	const { colorScheme, setColorScheme } = useMantineColorScheme()
 	const computedColorScheme = useComputedColorScheme("light", {
 		getInitialValueInEffect: true,
@@ -37,18 +40,24 @@ const Header = () => {
 
 	return (
 		<Paper py={10} px={15} shadow="md">
-			<Group justify={isMobile ? "center" : "space-between"} align="center">
+			<Group justify={"space-between"} align="center">
 				<Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
 					<Image src={logo.src} w={200} h={`100%`} alt="MOTOROLD" />
 				</Link>
-				<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>
-					<Input
-						pointer
-						placeholder="Search"
+				{pathName !== "/search" && (
+					<Button
+						variant="outline"
 						leftSection={<IconSearch size={20} />}
-						w={150}
-						readOnly
-					/>
+						w={isMobile ? "auto" : 200}
+						radius={5}
+						onClick={() => {
+							router.push("/search")
+						}}
+					>
+						Search
+					</Button>
+				)}
+				<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>
 					<Tooltip label="Cart" zIndex={1000}>
 						<Indicator
 							label={store.cartList?.length ?? 0}

@@ -1,13 +1,23 @@
-import { Anchor, Box, Container, Group } from "@mantine/core"
-import { MantineLogo } from "@mantinex/mantine-logo"
-import CartDrawer from "./CartDrawer"
+import logo from "@/../public/Logo.png"
+import {
+	Anchor,
+	Box,
+	Container,
+	Group,
+	Image,
+	SimpleGrid,
+	Text,
+} from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
+import Link from "next/link"
+import CartDrawer from "./CartDrawer"
+
+const date = new Date()
 
 const links = [
-	{ link: "#", label: "Contact" },
-	{ link: "#", label: "Privacy" },
-	{ link: "#", label: "Blog" },
-	{ link: "#", label: "Careers" },
+	{ link: "#", label: "Privacy Policy" },
+	{ link: "#", label: "Terms & Conditions" },
+	{ link: "#", label: "Contact Us" },
 ]
 
 export function Footer() {
@@ -28,10 +38,24 @@ export function Footer() {
 	return (
 		<Box pb={isMobile ? 36 : 0}>
 			<Container size="xl">
-				<Group justify="space-between" align="center" py="md">
-					<MantineLogo size={28} />
-					<Group>{items}</Group>
-				</Group>
+				<SimpleGrid cols={{ base: 1, sm: 3 }} py="md" w={`100%`} spacing={5}>
+					<Link
+						href="/"
+						style={{
+							textDecoration: "none",
+							color: "inherit",
+							margin: isMobile ? "0 auto" : 0,
+						}}
+					>
+						<Image src={logo.src} w={150} h={`100%`} alt="MOTOROLD" />
+					</Link>
+					<Group justify="center">{items}</Group>
+					<Group justify={isMobile ? "center" : "end"}>
+						<Text fz={12} c="dimmed">
+							© Copyright {date.getFullYear()}, All Rights Reserved
+						</Text>
+					</Group>
+				</SimpleGrid>
 			</Container>
 			<CartDrawer />
 		</Box>

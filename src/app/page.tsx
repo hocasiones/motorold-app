@@ -1,10 +1,10 @@
 "use client"
 
-import ProductGrid from "@/app/products/Components/ProductGrid"
 import { HomeContext } from "@/context/context"
 import directus from "@/directus/directus"
 import Fragments, { ProductIDsFragments } from "@/graphql/fragments"
 import useStore from "@/store/store"
+import { ProductsType } from "@/types/types"
 import ArrtoArrText from "@/utils/ArrtoArrText"
 import Randomize from "@/utils/Randomize"
 import {
@@ -18,6 +18,7 @@ import {
 } from "@mantine/core"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo, useState } from "react"
+import ProductCard from "./products/[slug]/Components/ProductCard"
 
 export default function Page() {
 	const store: any = useStore()
@@ -138,7 +139,18 @@ export default function Page() {
 	return (
 		<HomeContext.Provider value={ctx}>
 			<Stack>
-				{queryProducts.isLoading ? <Loading /> : <ProductGrid />}
+				{queryProducts.isLoading ? (
+					<Loading />
+				) : (
+					<SimpleGrid
+						cols={{ base: 2, xs: 3, sm: 4, md: 5, lg: 6, xl: 6 }}
+						spacing="lg"
+					>
+						{products?.map((product: ProductsType) => (
+							<ProductCard product={product} key={product?.id} />
+						))}
+					</SimpleGrid>
+				)}
 				{queryProducts.isSuccess && (
 					<Group justify="center" mt={20} grow>
 						<Button
