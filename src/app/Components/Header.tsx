@@ -54,7 +54,7 @@ const Header = () => {
 							router.push("/search")
 						}}
 					>
-						Search
+						SEARCH
 					</Button>
 				)}
 				<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>

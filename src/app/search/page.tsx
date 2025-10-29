@@ -16,7 +16,7 @@ import {
 	Tooltip,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
-import { IconSearch, IconX, IconXboxX } from "@tabler/icons-react"
+import { IconSearch, IconXboxX } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useRef } from "react"
 import ProductCard from "../products/[slug]/Components/ProductCard"

@@ -40,8 +40,8 @@ const ProductDetails = () => {
 	const { openCartDrawer } = useContext(SiteContext).cartDrawer
 
 	// console.log(minVariantPrice, maxVariantPrice)
-	// console.log(product)
-	// console.log(selectedVariant)
+	console.log(product)
+	console.log(selectedVariant)
 	// console.log(quantity)
 
 	useEffect(() => {
@@ -99,6 +99,40 @@ const ProductDetails = () => {
 		}
 	}
 
+	const NameStock = () => {
+		const name = selectedVariant?.variation_name
+			? selectedVariant?.variation_name
+			: product?.product_name
+		const stocks = selectedVariant?.variation_name
+			? selectedVariant?.stocks
+			: product?.stocks
+		const displayStock =
+			!product?.has_variations || (product?.has_variations && selectedVariant)
+		return (
+			<>
+				{selectedVariant?.variation_name && (
+					<Text fz="md" mt={5}>
+						Variant: <strong>{name}</strong>
+					</Text>
+				)}
+
+				{displayStock && (
+					<Text fz="md">
+						Stock :{" "}
+						<strong>
+							{
+								stocks?.find(
+									(item: any) =>
+										item?.product_stocks_id?.store?.store_name === store?.store
+								)?.product_stocks_id?.stock
+							}
+						</strong>
+					</Text>
+				)}
+			</>
+		)
+	}
+
 	return (
 		<Stack>
 			<Rating value={4.5} fractions={2} readOnly mt={10} />
@@ -122,12 +156,7 @@ const ProductDetails = () => {
 				<Price />
 			</Text>
 			<Paper shadow="xs" p="md" radius={5}>
-				<Stack>
-					{selectedVariant?.variation_name && (
-						<Text fz="md">
-							Variant: <strong>{selectedVariant?.variation_name}</strong>
-						</Text>
-					)}
+				<Stack gap={5}>
 					{product?.has_variations && (
 						<Group wrap="wrap" gap={10}>
 							{product?.variations?.map((variant: any) => {
@@ -165,7 +194,8 @@ const ProductDetails = () => {
 							})}
 						</Group>
 					)}
-					<ActionIcon.Group>
+					<NameStock />
+					<ActionIcon.Group mt={10} mb={20}>
 						<ActionIcon
 							variant="default"
 							size="xl"
