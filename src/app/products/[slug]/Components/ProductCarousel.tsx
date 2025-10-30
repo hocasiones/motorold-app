@@ -4,9 +4,9 @@ import { Image, Paper } from "@mantine/core"
 import { useContext } from "react"
 
 const ProductCarousel = () => {
-	const product = useContext(SingleProuctContext)?.product
+	const { data: product } = useContext(SingleProuctContext)?.product
 
-	console.log(product)
+	// console.log(product)
 
 	return (
 		<Paper shadow="md" p="md">

@@ -3,6 +3,7 @@ import useStore from "@/store/store"
 import { ProductsType } from "@/types/types"
 import {
 	ActionIcon,
+	Alert,
 	Avatar,
 	Badge,
 	Button,
@@ -19,6 +20,7 @@ import {
 import { useCounter } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
 import {
+	IconAlertCircle,
 	IconChevronDown,
 	IconChevronUp,
 	IconShoppingCart,
@@ -30,19 +32,25 @@ const initialMinValue = 99999999999
 
 const ProductDetails = () => {
 	const store: any = useStore()
-	const product = useContext(SingleProuctContext)?.product
-	const [quantity, { increment, decrement }] = useCounter(1, { min: 0 })
+	const { data: product, isSuccess } = useContext(SingleProuctContext)?.product
+	const [quantity, { increment, decrement, set: setQuantity }] = useCounter(1, {
+		min: 1,
+	})
 	const [selectedVariant, setSelectedVariant] = useState<any>(null)
 	const [minVariantPrice, setMinVariantPrice] = useState<number>(0)
 	const [maxVariantPrice, setMaxVariantPrice] = useState<number>(0)
 	const { openCartDrawer } = useContext(SiteContext).cartDrawer
+	const [maxQuantity, setMaxQuantity] = useState<number>(0)
 
 	// console.log(minVariantPrice, maxVariantPrice)
 	// console.log(product)
 	// console.log(selectedVariant)
-	// console.log(quantity)
+	console.log(quantity)
 	// console.log("Single Product", store?.singleProduct)
+	// console.log("store", store?.store)
+	// console.log("maxQuantity", maxQuantity)
 
+	//set minimum variant price
 	useEffect(() => {
 		if (product?.has_variations) {
 			const min = product?.variations?.reduce((acc: any, curr: any) => {
@@ -57,6 +65,23 @@ const ProductDetails = () => {
 			setMaxVariantPrice(max || 0)
 		}
 	}, [product?.has_variations, product?.variations])
+
+	//set max quantity
+	useEffect(() => {
+		if (!product?.has_variations) {
+			setMaxQuantity(
+				product?.stocks?.find(
+					(item: any) => item?.product_stocks_id?.store?.store_name
+				)?.product_stocks_id?.stock
+			)
+		} else if (product?.has_variations && selectedVariant) {
+			setMaxQuantity(
+				selectedVariant?.stocks?.find(
+					(item: any) => item?.product_stocks_id?.store?.store_name
+				)?.product_stocks_id?.stock
+			)
+		}
+	}, [product?.has_variations, product?.stocks, selectedVariant])
 
 	const Price = () => {
 		if (selectedVariant) {
@@ -107,6 +132,7 @@ const ProductDetails = () => {
 			: product?.stocks
 		const displayStock =
 			!product?.has_variations || (product?.has_variations && selectedVariant)
+
 		return (
 			<>
 				{selectedVariant?.variation_name && (
@@ -115,7 +141,7 @@ const ProductDetails = () => {
 					</Text>
 				)}
 
-				{displayStock && (
+				{displayStock && isSuccess && (
 					<Text fz="md">
 						Stock :{" "}
 						<strong>
@@ -194,39 +220,66 @@ const ProductDetails = () => {
 						</Group>
 					)}
 					<NameStock />
-					<ActionIcon.Group mt={10} mb={20}>
-						<ActionIcon
-							variant="default"
-							size="xl"
-							radius="md"
-							onClick={decrement}
+					{(!product?.has_variations ||
+						(product?.has_variations && selectedVariant)) &&
+						isSuccess && (
+							<ActionIcon.Group mt={10} mb={10}>
+								<ActionIcon
+									variant="default"
+									size="xl"
+									radius="md"
+									onClick={decrement}
+								>
+									<IconChevronDown color="var(--mantine-color-red-text)" />
+								</ActionIcon>
+								<NumberInput
+									defaultValue={1}
+									value={quantity}
+									hideControls
+									min={1}
+									max={maxQuantity}
+									error={quantity > maxQuantity}
+									size="md"
+									w={75}
+									styles={{ input: { textAlign: "center", height: "44px" } }}
+									allowLeadingZeros={false}
+									allowNegative={false}
+									onChange={(value: any) => {
+										setQuantity(value)
+									}}
+								/>
+								<ActionIcon
+									variant="default"
+									size="xl"
+									radius="md"
+									onClick={increment}
+									disabled={maxQuantity <= quantity}
+								>
+									<IconChevronUp color="var(--mantine-color-teal-text)" />
+								</ActionIcon>
+							</ActionIcon.Group>
+						)}
+					{quantity > maxQuantity && isSuccess && (
+						<Alert
+							variant="light"
+							color="red"
+							title="Invalid Quantity"
+							icon={<IconAlertCircle />}
 						>
-							<IconChevronDown color="var(--mantine-color-red-text)" />
-						</ActionIcon>
+							Quantity must NOT be higher than available stock.
+						</Alert>
+					)}
 
-						<NumberInput value={quantity} />
-						<ActionIcon
-							variant="default"
-							size="xl"
-							radius="md"
-							onClick={increment}
-							disabled={
-								(!product?.has_variations &&
-									product?.stocks?.find(
-										(item: any) => item?.product_stocks_id?.store?.store_name
-									)?.product_stocks_id?.stock) <= quantity ||
-								(product?.has_variations && selectedVariant)
-							}
-						>
-							<IconChevronUp color="var(--mantine-color-teal-text)" />
-						</ActionIcon>
-					</ActionIcon.Group>
 					<Button
+						mt={10}
 						size="md"
 						color="red"
 						radius={0}
 						leftSection={<IconShoppingCart size={24} />}
-						disabled={product?.has_variations && !selectedVariant}
+						disabled={
+							(product?.has_variations && !selectedVariant) ||
+							quantity > maxQuantity
+						}
 						onClick={() => {
 							if (!product?.has_variations) {
 								const targetIndex = store?.cartList?.findIndex(

@@ -31,9 +31,9 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
 
 	const ctx = useMemo(() => {
 		return {
-			product: query?.data,
+			product: query,
 		}
-	}, [query?.data])
+	}, [query])
 
 	return (
 		<SingleProuctContext.Provider value={ctx}>
