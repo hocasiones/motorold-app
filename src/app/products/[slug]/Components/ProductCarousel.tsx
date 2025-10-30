@@ -1,9 +1,12 @@
-import useStore from "@/store/store"
+import { SingleProuctContext } from "@/context/context"
 import { Carousel } from "@mantine/carousel"
-import { Paper, Image } from "@mantine/core"
+import { Image, Paper } from "@mantine/core"
+import { useContext } from "react"
 
 const ProductCarousel = () => {
-	const product = useStore((state: any) => state.singleProduct)
+	const product = useContext(SingleProuctContext)?.product
+
+	console.log(product)
 
 	return (
 		<Paper shadow="md" p="md">

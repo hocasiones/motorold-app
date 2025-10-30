@@ -1,22 +1,20 @@
 "use client"
 
+import { SingleProuctContext } from "@/context/context"
 import directus from "@/directus/directus"
 import Fragments from "@/graphql/fragments"
-import useStore from "@/store/store"
 import { Grid } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
-import { use, useEffect } from "react"
+import { use, useMemo } from "react"
 import ProductCarousel from "./Components/ProductCarousel"
 import ProductDetails from "./Components/ProductDetails"
 import ProductTabs from "./Components/ProductTabs"
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
 	const { slug } = use(params)
-	const product = useStore((state: any) => state.singleProduct)
-	const setSingleProduct = useStore((state: any) => state.setSingleProduct)
 
 	const query = useQuery({
-		queryKey: ["product", product?.id],
+		queryKey: ["product"],
 		queryFn: async () => {
 			const { products_by_id } = await directus.query(`
 					${Fragments}
@@ -28,27 +26,29 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
 				`)
 			return products_by_id
 		},
-		enabled: !product,
+		// enabled: !product,
 	})
 
-	useEffect(() => {
-		if (query.isFetched && query.data) {
-			setSingleProduct({ ...query.data })
+	const ctx = useMemo(() => {
+		return {
+			product: query?.data,
 		}
-	}, [query.isFetched, query.data, setSingleProduct])
+	}, [query?.data])
 
 	return (
-		<Grid gutter="xl">
-			<Grid.Col span={{ base: 12, md: 6 }}>
-				<ProductCarousel />
-			</Grid.Col>
-			<Grid.Col span={{ base: 12, md: 6 }}>
-				<ProductDetails />
-			</Grid.Col>
-			<Grid.Col span={12}>
-				<ProductTabs />
-			</Grid.Col>
-		</Grid>
+		<SingleProuctContext.Provider value={ctx}>
+			<Grid gutter="xl">
+				<Grid.Col span={{ base: 12, md: 6 }}>
+					<ProductCarousel />
+				</Grid.Col>
+				<Grid.Col span={{ base: 12, md: 6 }}>
+					<ProductDetails />
+				</Grid.Col>
+				<Grid.Col span={12}>
+					<ProductTabs />
+				</Grid.Col>
+			</Grid>
+		</SingleProuctContext.Provider>
 	)
 }
 

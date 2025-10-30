@@ -24,8 +24,6 @@ interface StoreType {
 	setCompareList: (compareList: object[]) => void
 	wishList: object[]
 	setWishList: (wishList: object[]) => void
-	singleProduct: object | null
-	setSingleProduct: (singleProduct: object) => void
 	searchValue: string
 	setSearchValue: (searchValue: string) => void
 	clear: () => void
@@ -45,7 +43,7 @@ const useStore = create(
 					setIsRemembered: (isRemembered) => set({ isRemembered }),
 					darkMode: false,
 					setDarkMode: (darkMode) => set({ darkMode }),
-					store: "MOTOROLD",
+					store: "Motorold",
 					setStore: (store) => set({ store }),
 					fetchMaxCount: 18,
 					setFetchMaxCount: (fetchMaxCount) => set({ fetchMaxCount }),
@@ -81,8 +79,6 @@ const useStore = create(
 					setCompareList: (compareList) => set({ compareList }),
 					wishList: [],
 					setWishList: (wishList) => set({ wishList }),
-					singleProduct: null,
-					setSingleProduct: (singleProduct) => set({ singleProduct }),
 					searchValue: "",
 					setSearchValue: (searchValue) => set({ searchValue }),
 					clear: () =>
@@ -94,7 +90,6 @@ const useStore = create(
 							cartList: [],
 							compareList: [],
 							wishList: [],
-							singleProduct: null,
 						}),
 				} as StoreType),
 			{

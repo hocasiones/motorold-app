@@ -1,4 +1,4 @@
-import { SiteContext } from "@/context/context"
+import { SingleProuctContext, SiteContext } from "@/context/context"
 import useStore from "@/store/store"
 import { ProductsType } from "@/types/types"
 import {
@@ -8,6 +8,7 @@ import {
 	Button,
 	Group,
 	NumberFormatter,
+	NumberInput,
 	Paper,
 	Rating,
 	Stack,
@@ -25,24 +26,22 @@ import {
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 
-// const getMin = (a, b) => Math.min(a, b);
-// const getMax = (a, b) => Math.max(a, b);
-
 const initialMinValue = 99999999999
 
 const ProductDetails = () => {
 	const store: any = useStore()
-	const product = useStore((state: any) => state.singleProduct)
-	const [quantity, { increment, decrement }] = useCounter(1, { min: 1 })
+	const product = useContext(SingleProuctContext)?.product
+	const [quantity, { increment, decrement }] = useCounter(1, { min: 0 })
 	const [selectedVariant, setSelectedVariant] = useState<any>(null)
 	const [minVariantPrice, setMinVariantPrice] = useState<number>(0)
 	const [maxVariantPrice, setMaxVariantPrice] = useState<number>(0)
 	const { openCartDrawer } = useContext(SiteContext).cartDrawer
 
 	// console.log(minVariantPrice, maxVariantPrice)
-	console.log(product)
-	console.log(selectedVariant)
+	// console.log(product)
+	// console.log(selectedVariant)
 	// console.log(quantity)
+	// console.log("Single Product", store?.singleProduct)
 
 	useEffect(() => {
 		if (product?.has_variations) {
@@ -204,19 +203,20 @@ const ProductDetails = () => {
 						>
 							<IconChevronDown color="var(--mantine-color-red-text)" />
 						</ActionIcon>
-						<ActionIcon.GroupSection
-							variant="default"
-							size="xl"
-							bg="var(--mantine-color-body)"
-							miw={80}
-						>
-							{quantity}
-						</ActionIcon.GroupSection>
+
+						<NumberInput value={quantity} />
 						<ActionIcon
 							variant="default"
 							size="xl"
 							radius="md"
 							onClick={increment}
+							disabled={
+								(!product?.has_variations &&
+									product?.stocks?.find(
+										(item: any) => item?.product_stocks_id?.store?.store_name
+									)?.product_stocks_id?.stock) <= quantity ||
+								(product?.has_variations && selectedVariant)
+							}
 						>
 							<IconChevronUp color="var(--mantine-color-teal-text)" />
 						</ActionIcon>
