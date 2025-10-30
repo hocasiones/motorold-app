@@ -45,7 +45,7 @@ const ProductDetails = () => {
 	// console.log(minVariantPrice, maxVariantPrice)
 	// console.log(product)
 	// console.log(selectedVariant)
-	console.log(quantity)
+	// console.log(quantity)
 	// console.log("Single Product", store?.singleProduct)
 	// console.log("store", store?.store)
 	// console.log("maxQuantity", maxQuantity)

@@ -95,7 +95,6 @@ const ProductCard = ({ product }: any) => {
 					h={`100%`}
 					alt={product.product_name}
 					onClick={() => {
-						store?.setSingleProduct(product)
 						router.push(`/products/${product.id}`)
 					}}
 				/>
