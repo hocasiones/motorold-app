@@ -26,7 +26,6 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
 				`)
 			return products_by_id
 		},
-		// enabled: !product,
 	})
 
 	const ctx = useMemo(() => {

@@ -263,10 +263,13 @@ const ProductDetails = () => {
 						<Alert
 							variant="light"
 							color="red"
-							title="Invalid Quantity"
+							title={maxQuantity === 0 ? "Out of stock" : "Invalid Quantity."}
 							icon={<IconAlertCircle />}
 						>
-							Quantity must NOT be higher than available stock.
+							{maxQuantity === 0 &&
+							(!product?.has_variations || selectedVariant)
+								? "This item is currently out of stock."
+								: "Quantity must NOT be higher than available stock."}
 						</Alert>
 					)}
 

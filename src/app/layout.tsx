@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css"
+// ‼️ import nprogress styles after core package styles
+import "@mantine/nprogress/styles.css"
 // ‼️ import carousel styles after core package styles
 import "@mantine/carousel/styles.css"
 // ‼️ import notifications styles after core package styles
