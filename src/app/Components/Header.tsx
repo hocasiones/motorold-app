@@ -19,7 +19,6 @@ import {
 	IconShoppingBagHeart,
 	IconShoppingCart,
 	IconSun,
-	IconVs,
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -74,11 +73,6 @@ const Header = () => {
 								<IconShoppingCart />
 							</ActionIcon>
 						</Indicator>
-					</Tooltip>
-					<Tooltip label="Compare" zIndex={1000}>
-						<ActionIcon variant="subtle" color="blue" radius="sm">
-							<IconVs />
-						</ActionIcon>
 					</Tooltip>
 					<Tooltip label="Wishlist" zIndex={1000}>
 						<ActionIcon variant="subtle" color="blue" radius="sm">
