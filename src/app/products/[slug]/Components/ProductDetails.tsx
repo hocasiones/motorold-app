@@ -209,7 +209,7 @@ const ProductDetails = () => {
 												src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${
 													image?.id || product?.featured_image?.id
 												}
-											}?width=140&height=140&fit=cover`}
+											}?width=140&height=140`}
 												radius="sm"
 												size={70}
 											/>

@@ -34,7 +34,7 @@ const OrderSummary = () => {
 						>
 							<Group wrap="nowrap" align="start">
 								<Image
-									src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${item?.featured_image?.id}&width=160&height=160&fit=cover`}
+									src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${item?.featured_image?.id}?width=160&height=160`}
 									alt={item?.product_name}
 									h={60}
 									w={60}

@@ -49,7 +49,7 @@ const CartDrawer = () => {
 						>
 							<Group wrap="nowrap" align="start">
 								<Image
-									src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${item?.featured_image?.id}&width=200&height=200&fit=cover`}
+									src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${item?.featured_image?.id}?width=200`}
 									alt={item?.product_name}
 									h={100}
 									w={100}

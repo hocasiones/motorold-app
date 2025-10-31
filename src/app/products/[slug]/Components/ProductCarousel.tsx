@@ -18,7 +18,7 @@ const ProductCarousel = () => {
 				<Carousel.Slide>
 					{product?.featured_image && (
 						<Image
-							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=600&height=600&fit=cover`}
+							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=600&height=600`}
 							width={600}
 							height={600}
 							alt={product?.product_name}
@@ -28,7 +28,7 @@ const ProductCarousel = () => {
 				{product?.images?.map((image: any) => (
 					<Carousel.Slide key={image?.directus_files_id?.id}>
 						<Image
-							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${image?.directus_files_id?.id}?width=600&height=600&fit=cover`}
+							src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${image?.directus_files_id?.id}?width=600&height=600`}
 							alt={product?.product_name}
 							width={600}
 							height={600}

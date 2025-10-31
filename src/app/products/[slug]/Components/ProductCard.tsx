@@ -91,7 +91,7 @@ const ProductCard = ({ product }: any) => {
 				})}
 			>
 				<Image
-					src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=300&height=300&fit=cover`}
+					src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${product?.featured_image?.id}?width=300&height=300`}
 					h={`100%`}
 					alt={product.product_name}
 					onClick={() => {
