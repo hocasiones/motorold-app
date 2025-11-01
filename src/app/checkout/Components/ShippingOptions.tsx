@@ -7,10 +7,9 @@ import Lalamove from "./Lalamove"
 const ShippingOptions = () => {
 	const {
 		steps: { prevStep, nextStep },
-		selectedShipping,
-		setSelectedShipping,
+		form,
 	} = useContext(CheckoutContext)
-	console.log(selectedShipping)
+
 	return (
 		<CheckoutWrapper>
 			<Stack gap={20}>
@@ -24,20 +23,18 @@ const ShippingOptions = () => {
 						color="orange"
 						h={150}
 						radius="lg"
-						variant={!selectedShipping.lalamove ? "outline" : "filled"}
+						variant={form?.shipping?.name === "lalamove" ? "outline" : "filled"}
 						onClick={() => {
-							setSelectedShipping({ lalamove: true })
+							form.setFieldValue("shipping.name", "lalamove")
 						}}
 					>
 						LALAMOVE
 					</Button>
 				</SimpleGrid>
-				{selectedShipping.lalamove && <Lalamove />}
+				{form?.getValues()?.shipping?.lalamove && <Lalamove />}
 			</Stack>
 			<Group justify="space-between" mt={20}>
-				<Button variant="light" onClick={prevStep}>
-					PREV
-				</Button>
+				<Button onClick={prevStep}>PREV</Button>
 				<Button disabled onClick={nextStep}>
 					NEXT
 				</Button>

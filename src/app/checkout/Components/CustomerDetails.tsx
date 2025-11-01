@@ -3,6 +3,7 @@ import {
 	Button,
 	Divider,
 	Group,
+	NumberInput,
 	Paper,
 	Space,
 	Stack,
@@ -14,6 +15,7 @@ import { IconDeviceMobile, IconMail } from "@tabler/icons-react"
 import { useContext, useState } from "react"
 import CheckoutWrapper from "./CheckoutWrapper"
 
+import useStore from "@/store/store"
 import {
 	AdvancedMarker,
 	APIProvider,
@@ -22,25 +24,18 @@ import {
 } from "@vis.gl/react-google-maps"
 import MapControl from "./map/MapControl"
 import MapResult from "./map/MapResult"
+import { type } from "../../../store/store"
 
 const API_KEY: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string
 
 export type AutocompleteMode = { id: string; label: string }
 
 const CustomerDetails = () => {
+	const store: any = useStore()
 	const {
 		steps: { nextStep },
 		form,
-		hasClickedAddressMap,
-		setHasClickedAddressMap,
-		address: {
-			addressLong,
-			addressLat,
-			setAddressLat,
-			setAddressLong,
-			addressMapZoom,
-		},
-		geo: { isGeolocationEnabled },
+		address: { addressMapZoom },
 	} = useContext(CheckoutContext)
 	const [selectedPlace, setSelectedPlace] =
 		useState<google.maps.places.Place | null>(null)
@@ -72,6 +67,7 @@ const CustomerDetails = () => {
 						placeholder="eg. 09461234567"
 						size="md"
 						required
+						maxLength={11}
 						leftSection={<IconDeviceMobile size={16} />}
 						{...form.getInputProps("mobileNumber")}
 					/>
@@ -97,15 +93,17 @@ const CustomerDetails = () => {
 						<Map
 							mapId={"49ae42fed52588c3"}
 							style={{ width: "100%", height: 450 }}
-							defaultCenter={{ lat: addressLat, lng: addressLong }}
+							defaultCenter={{
+								lat: form.getValues().latitude || 0,
+								lng: form.getValues().longitude || 0,
+							}}
 							defaultZoom={addressMapZoom}
 							gestureHandling={"greedy"}
 							disableDefaultUI={true}
 							onClick={(e: any) => {
 								console.log("Detail", e)
-								setAddressLong(e?.detail?.latLng.lng)
-								setAddressLat(e?.detail?.latLng.lat)
-								setHasClickedAddressMap(true)
+								form.setFieldValue("longitude", e?.detail?.latLng.lng)
+								form.setFieldValue("latitude", e?.detail?.latLng.lat)
 							}}
 						>
 							<MapControl
@@ -113,11 +111,18 @@ const CustomerDetails = () => {
 								onPlaceSelect={setSelectedPlace}
 							/>
 							<MapResult place={selectedPlace} />
-							{(isGeolocationEnabled || hasClickedAddressMap) && (
-								<AdvancedMarker
-									position={{ lat: addressLat, lng: addressLong }}
-								/>
-							)}
+							<AdvancedMarker
+								position={{
+									lat:
+										form.getValues().latitude ||
+										store?.checkoutData?.form.latitude ||
+										0,
+									lng:
+										form.getValues().longitude ||
+										store?.checkoutData?.form.longitude ||
+										0,
+								}}
+							/>
 						</Map>
 					</APIProvider>
 				</Stack>
@@ -132,8 +137,8 @@ const CustomerDetails = () => {
 						form.getValues().lastName.length === 0 ||
 						form.getValues().mobileNumber.length === 0 ||
 						form.getValues().address.length === 0 ||
-						addressLong === 0 ||
-						addressLat === 0
+						form.getValues().longitude === 0 ||
+						form.getValues().latitude === 0
 					}
 					onClick={nextStep}
 				>

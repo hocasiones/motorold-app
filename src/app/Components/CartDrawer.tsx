@@ -12,14 +12,32 @@ import {
 	Text,
 } from "@mantine/core"
 import { IconChevronDown, IconChevronUp, IconTrash } from "@tabler/icons-react"
-import { useRouter } from "next/navigation"
-import { memo, useContext } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { memo, useContext, useEffect } from "react"
 
 const CartDrawer = () => {
 	const { cartDrawerOpened, closeCartDrawer } =
 		useContext(SiteContext).cartDrawer
 	const store: any = useStore()
 	const router = useRouter()
+	const pathname = usePathname()
+
+	useEffect(() => {
+		if (
+			pathname === "/checkout" &&
+			store?.cartList.length <= 0 &&
+			cartDrawerOpened
+		) {
+			closeCartDrawer()
+			router.push("/")
+		}
+	}, [
+		cartDrawerOpened,
+		closeCartDrawer,
+		pathname,
+		router,
+		store?.cartList.length,
+	])
 
 	return (
 		<Drawer
@@ -148,26 +166,29 @@ const CartDrawer = () => {
 				>
 					<Group justify="space-between" align="center">
 						<Text size="md">
-							Order Items:{" "}
+							Cart Items:{" "}
 							<Text fw={700} span>
 								{store?.cartList?.length ?? 0}
 							</Text>
 						</Text>
-						<Text size="lg">
-							Sub Total:{" "}
-							<Text c="red" fw={700} span>
-								<NumberFormatter
-									value={store?.getCartListSubTotal()}
-									prefix="₱"
-									thousandSeparator
-								/>
+						{store?.cartList?.length > 0 && (
+							<Text size="lg">
+								Sub Total:{" "}
+								<Text c="red" fw={700} span>
+									<NumberFormatter
+										value={store?.getCartListSubTotal()}
+										prefix="₱"
+										thousandSeparator
+									/>
+								</Text>
 							</Text>
-						</Text>
+						)}
 					</Group>
 					<Button
 						size="md"
 						radius={0}
 						fullWidth
+						disabled={store?.cartList?.length === 0}
 						onClick={() => {
 							closeCartDrawer()
 							router.push("/checkout")

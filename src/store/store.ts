@@ -26,6 +26,8 @@ interface StoreType {
 	setWishList: (wishList: object[]) => void
 	searchValue: string
 	setSearchValue: (searchValue: string) => void
+	checkoutData: object | null
+	setCheckoutData: (checkoutValue: object) => void
 	clear: () => void
 }
 export type { StoreType }
@@ -81,6 +83,8 @@ const useStore = create(
 					setWishList: (wishList) => set({ wishList }),
 					searchValue: "",
 					setSearchValue: (searchValue) => set({ searchValue }),
+					checkoutData: null,
+					setCheckoutData: (checkoutData) => set({ checkoutData }),
 					clear: () =>
 						set({
 							session: null,

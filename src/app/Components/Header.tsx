@@ -97,16 +97,6 @@ const Header = () => {
 							)}
 						</ActionIcon>
 					</Tooltip>
-					<ActionIcon
-						variant="subtle"
-						color="blue"
-						radius="sm"
-						onClick={() => {
-							store.clear()
-						}}
-					>
-						<IconShoppingBagHeart />
-					</ActionIcon>
 				</Group>
 			</Group>
 		</Paper>
