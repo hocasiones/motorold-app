@@ -3,7 +3,6 @@ import {
 	Button,
 	Divider,
 	Group,
-	NumberInput,
 	Paper,
 	Space,
 	Stack,
@@ -24,7 +23,7 @@ import {
 } from "@vis.gl/react-google-maps"
 import MapControl from "./map/MapControl"
 import MapResult from "./map/MapResult"
-import { type } from "../../../store/store"
+import { useMediaQuery } from "@mantine/hooks"
 
 const API_KEY: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string
 
@@ -32,6 +31,7 @@ export type AutocompleteMode = { id: string; label: string }
 
 const CustomerDetails = () => {
 	const store: any = useStore()
+	const isMobile = useMediaQuery("(max-width: 767px)")
 	const {
 		steps: { nextStep },
 		form,
@@ -42,7 +42,7 @@ const CustomerDetails = () => {
 
 	return (
 		<CheckoutWrapper>
-			<Paper shadow="md" p="lg" radius={5}>
+			<Paper shadow="md" p={isMobile ? "xs" : "md"} radius={5}>
 				<Stack>
 					<Text fz={20} fw={700}>
 						Customer Details
@@ -86,8 +86,9 @@ const CustomerDetails = () => {
 						{...form.getInputProps("address")}
 					/>
 					<Divider
-						label="Click to pin your exact location on map for accuracy"
+						label="Pin your exact address or drop off location"
 						labelPosition="left"
+						styles={{ label: { fontSize: 14 } }}
 					/>
 					<APIProvider apiKey={API_KEY}>
 						<Map
@@ -130,6 +131,7 @@ const CustomerDetails = () => {
 			<Group justify="space-between" mt={20}>
 				<Space />
 				<Button
+					size="md"
 					disabled={
 						!form.isDirty() ||
 						Object.keys(form.errors).length > 0 ||

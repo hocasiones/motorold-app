@@ -9,21 +9,22 @@ import { useState } from "react"
 
 import MapControl from "./map/MapControl"
 import MapResult from "./map/MapResult"
+import { useMediaQuery } from "@mantine/hooks"
 
 const API_KEY: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string
 
 export type AutocompleteMode = { id: string; label: string }
 
 const Lalamove = () => {
+	const isMobile = useMediaQuery("(max-width: 767px)")
 	const [selectedPlace, setSelectedPlace] =
 		useState<google.maps.places.Place | null>(null)
-
 	const [hasClicked, setHasClicked] = useState(false)
 	const [long, setLong] = useState(0)
 	const [lat, setLat] = useState(0)
 
 	return (
-		<Paper shadow="md" p="lg" radius={10}>
+		<Paper shadow="md" p={isMobile ? "xs" : "md"} radius={10}>
 			<Stack>
 				<APIProvider apiKey={API_KEY}>
 					<Map

@@ -31,11 +31,13 @@ const ShippingOptions = () => {
 						LALAMOVE
 					</Button>
 				</SimpleGrid>
-				{form?.getValues()?.shipping?.lalamove && <Lalamove />}
+				{form?.getValues()?.shipping?.name === "lalamove" && <Lalamove />}
 			</Stack>
 			<Group justify="space-between" mt={20}>
-				<Button onClick={prevStep}>PREV</Button>
-				<Button disabled onClick={nextStep}>
+				<Button size="md" onClick={prevStep}>
+					BACK
+				</Button>
+				<Button size="md" disabled onClick={nextStep}>
 					NEXT
 				</Button>
 			</Group>

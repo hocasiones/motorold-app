@@ -28,6 +28,7 @@ const Header = () => {
 	const store: any = useStore()
 	const router = useRouter()
 	const pathName = usePathname()
+	const isMobile = useMediaQuery("(max-width: 767px)")
 	const { colorScheme, setColorScheme } = useMantineColorScheme()
 	const computedColorScheme = useComputedColorScheme("light", {
 		getInitialValueInEffect: true,
@@ -35,7 +36,6 @@ const Header = () => {
 	const {
 		cartDrawer: { openCartDrawer },
 	} = useContext(SiteContext)
-	const isMobile = useMediaQuery("(max-width: 767px)")
 
 	return (
 		<Paper py={10} px={15} shadow="md">
@@ -57,23 +57,25 @@ const Header = () => {
 					</Button>
 				)}
 				<Group gap={10} align="center" display={isMobile ? "none" : "flex"}>
-					<Tooltip label="Cart" zIndex={1000}>
-						<Indicator
-							label={store.cartList?.length ?? 0}
-							size={16}
-							color="red"
-							mb={-6}
-						>
-							<ActionIcon
-								variant="subtle"
-								color="blue"
-								radius="sm"
-								onClick={openCartDrawer}
+					{pathName !== "/checkout" && (
+						<Tooltip label="Cart" zIndex={1000}>
+							<Indicator
+								label={store.cartList?.length ?? 0}
+								size={16}
+								color="red"
+								mb={-6}
 							>
-								<IconShoppingCart />
-							</ActionIcon>
-						</Indicator>
-					</Tooltip>
+								<ActionIcon
+									variant="subtle"
+									color="blue"
+									radius="sm"
+									onClick={openCartDrawer}
+								>
+									<IconShoppingCart />
+								</ActionIcon>
+							</Indicator>
+						</Tooltip>
+					)}
 					<Tooltip label="Wishlist" zIndex={1000}>
 						<ActionIcon variant="subtle" color="blue" radius="sm">
 							<IconShoppingBagHeart />

@@ -10,6 +10,7 @@ import { Footer } from "./Footer"
 import Header from "./Header"
 import { LoadingProgress } from "./LoadingProgress"
 import MobileMenu from "./MobileMenu"
+import { usePathname } from "next/navigation"
 
 const theme = createTheme({
 	/* Put your mantine theme override here */
@@ -26,6 +27,7 @@ const Providers = ({
 }>) => {
 	const [cartDrawerOpened, { open: openCartDrawer, close: closeCartDrawer }] =
 		useDisclosure(false)
+	const pathName = usePathname()
 
 	const ctx = useMemo(() => {
 		return {
@@ -48,7 +50,7 @@ const Providers = ({
 						<Container size="xl">{children}</Container>
 					</Box>
 					<Footer />
-					<MobileMenu />
+					{pathName !== "/checkout" && <MobileMenu />}
 				</SiteContext.Provider>
 			</QueryClientProvider>
 		</MantineProvider>

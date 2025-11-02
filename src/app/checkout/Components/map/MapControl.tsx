@@ -1,7 +1,7 @@
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps"
 
 import { useAutocompleteSuggestions } from "@/hooks/use-map-autocomplete-suggestion"
-import { Box } from "@mantine/core"
+import { Box, useMantineTheme } from "@mantine/core"
 import { useCallback, useMemo, useState } from "react"
 import Combobox from "react-widgets/Combobox"
 import "react-widgets/styles.css"
@@ -15,6 +15,7 @@ const LMapControl = ({
 	controlPosition,
 	onPlaceSelect,
 }: CustomAutocompleteControlProps) => {
+	const theme = useMantineTheme()
 	const [inputValue, setInputValue] = useState<string>("")
 
 	const { suggestions, resetSession, isLoading } =
@@ -78,6 +79,11 @@ const LMapControl = ({
 					focusFirstItem={true}
 					hideEmptyPopup
 					hideCaret
+					style={{
+						width: 300,
+						fontSize: 16,
+						border: `1px solid ${theme.colors.blue}`,
+					}}
 				/>
 			</Box>
 		</MapControl>
