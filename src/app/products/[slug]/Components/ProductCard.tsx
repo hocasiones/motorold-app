@@ -1,13 +1,10 @@
 import { SiteContext } from "@/context/context"
 import useStore from "@/store/store"
-import { ProductsType } from "@/types/types"
 import {
-	Button,
 	Card,
 	Group,
 	Image,
 	NumberFormatter,
-	Overlay,
 	Rating,
 	Stack,
 	Text,
@@ -15,8 +12,6 @@ import {
 	useMantineTheme,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { notifications } from "@mantine/notifications"
-import { IconEye, IconShoppingCart } from "@tabler/icons-react"
 import _ from "lodash"
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useState } from "react"
@@ -107,7 +102,7 @@ const ProductCard = ({ product }: any) => {
 					p={10}
 					style={{ position: "relative" }}
 				>
-					{hovered && (
+					{/* {hovered && (
 						<Overlay color="#000" backgroundOpacity={0.3} p={10}>
 							<Stack justify="center" gap={5} h={`100%`}>
 								<Button
@@ -163,7 +158,7 @@ const ProductCard = ({ product }: any) => {
 								)}
 							</Stack>
 						</Overlay>
-					)}
+					)} */}
 					<Stack justify="space-between" h={`100%`}>
 						<Stack gap={3}>
 							<Rating value={4.5} fractions={2} readOnly size={12} mb={3} />

@@ -1,3 +1,4 @@
+import { CheckoutContext } from "@/context/context"
 import useStore from "@/store/store"
 import {
 	Image,
@@ -7,24 +8,35 @@ import {
 	Paper,
 	Stack,
 	Text,
+	Space,
 } from "@mantine/core"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import _ from "lodash"
 
 const OrderSummary = () => {
 	const store: any = useStore()
+	const { form } = useContext(CheckoutContext)
 	const [total, setTotal] = useState(0)
+
+	const values = form?.getValues()
+	const shippingPrices = values?.shipping?.quotation?.priceBreakdown
 
 	useEffect(() => {
 		setTotal(store?.getCartListSubTotal())
 	}, [store])
 
 	return (
-		<Paper shadow="md" p="md" radius={5}>
+		<Paper
+			shadow="md"
+			p="md"
+			radius={5}
+			style={{ position: "sticky", top: 20 }}
+		>
 			<Stack>
 				<Text fw={600} fz={18}>
 					Order Summary
 				</Text>
-				<Divider />
+				<Divider mt={-10} />
 				<Stack gap={10}>
 					{store?.cartList?.map((item: any, index: number) => (
 						<Stack
@@ -78,6 +90,69 @@ const OrderSummary = () => {
 						</Text>
 					</Text>
 				</Group>
+				{values?.shipping?.quotation && (
+					<>
+						<Space />
+						<Text fw={600} fz={18}>
+							Shipping Details
+						</Text>
+						<Divider mt={-10} />
+						<Text>
+							<strong>Courier:</strong> {_.upperFirst(values?.shipping?.name)}
+						</Text>
+						<Stack gap={2}>
+							<Group justify="space-between" align="center">
+								<Text size="sm">Base Fee</Text>
+								<Text size="md">
+									<Text span>
+										<NumberFormatter
+											value={shippingPrices?.base}
+											prefix="₱"
+											thousandSeparator
+										/>
+									</Text>
+								</Text>
+							</Group>
+							<Group justify="space-between" align="center">
+								<Text size="sm">Admin Fee</Text>
+								<Text size="md">
+									<Text span>
+										<NumberFormatter
+											value={shippingPrices?.adminFee}
+											prefix="₱"
+											thousandSeparator
+										/>
+									</Text>
+								</Text>
+							</Group>
+							<Group justify="space-between" align="center">
+								<Text size="sm">Extra Mileage</Text>
+								<Text size="md">
+									<Text span>
+										<NumberFormatter
+											value={shippingPrices?.extraMileage}
+											prefix="₱"
+											thousandSeparator
+										/>
+									</Text>
+								</Text>
+							</Group>
+						</Stack>
+						<Divider my={-10} />
+						<Group justify="space-between" align="center">
+							<Text size="sm">Total Shipping Fee</Text>
+							<Text size="md">
+								<Text span>
+									<NumberFormatter
+										value={shippingPrices?.total}
+										prefix="₱"
+										thousandSeparator
+									/>
+								</Text>
+							</Text>
+						</Group>
+					</>
+				)}
 			</Stack>
 		</Paper>
 	)

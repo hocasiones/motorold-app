@@ -37,7 +37,11 @@ const ShippingOptions = () => {
 				<Button size="md" onClick={prevStep}>
 					BACK
 				</Button>
-				<Button size="md" disabled onClick={nextStep}>
+				<Button
+					size="md"
+					disabled={!form.getValues()?.shipping?.quotation}
+					onClick={nextStep}
+				>
 					NEXT
 				</Button>
 			</Group>

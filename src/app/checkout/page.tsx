@@ -65,7 +65,7 @@ const Page = () => {
 
 	const [addressMapZoom, setAddressMapZoom] = useState(17)
 
-	console.log("Form", form?.getValues())
+	console.dir("Form", form?.getValues())
 	// console.log(isGeolocationAvailable, isGeolocationEnabled)
 	// console.log("Coordinates", coords)
 	// console.log("Address", form.getValues().latitude, form.getValues().longitude)

@@ -11,7 +11,7 @@ import {
 	TextInput,
 } from "@mantine/core"
 import { IconDeviceMobile, IconMail } from "@tabler/icons-react"
-import { useContext, useState } from "react"
+import { memo, useContext, useState } from "react"
 import CheckoutWrapper from "./CheckoutWrapper"
 
 import useStore from "@/store/store"
@@ -102,7 +102,7 @@ const CustomerDetails = () => {
 							gestureHandling={"greedy"}
 							disableDefaultUI={true}
 							onClick={(e: any) => {
-								console.log("Detail", e)
+								// console.log("Detail", e)
 								form.setFieldValue("longitude", e?.detail?.latLng.lng)
 								form.setFieldValue("latitude", e?.detail?.latLng.lat)
 							}}
@@ -151,4 +151,4 @@ const CustomerDetails = () => {
 	)
 }
 
-export default CustomerDetails
+export default memo(CustomerDetails)
